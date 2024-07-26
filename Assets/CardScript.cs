@@ -13,8 +13,10 @@ public class CardScript : MonoBehaviour
     private Vector2 colliderSize;
     private Camera mainCamera;
     private GameObject parentGameobject;
-    private bool usingCard;
     private ManoScript scriptMano;
+    private Vector3 targetPosition;
+    private TableCards tableScript;
+
     private void Awake()
     {
         anim = GetComponent<Animator>();
@@ -61,29 +63,57 @@ public class CardScript : MonoBehaviour
 
     private void OnMouseDown()
     {
+        render.sortingOrder = 20;
         dragging = true;
+        GameManager.movingCard = true;
         cardCollider.size = new Vector2(0.2f, 0.2f);
         cardCollider.offset = new Vector2(0, 0);
         anim.SetBool("ShowCard", false);
-        usingCard = true;
         transform.eulerAngles = new Vector3(33.55f, 0, 0);
         transform.localScale = new Vector3(0.35f, 0.35f, 0.35f);
+        
     }
 
     private void OnMouseUp()
     {
+
+        if (tableScript != null && tableScript.available)
+        {
+            tableScript.available = false;
+            tableScript.ActivateButton();
+            transform.parent.parent = tableScript.gameObject.transform;
+            StartCoroutine(MoveFromTo(parentGameobject.transform.position, targetPosition, 0.15f));
+            cardCollider.enabled = false;
+        }
+       else 
+        {
+
+            cardCollider.size = colliderSize;
+            cardCollider.offset = colliderOffset;
+            transform.eulerAngles = new Vector3(0, 0, 0);
+            transform.localScale = new Vector3(0.45f, 0.45f, 0.45f);
+        }
+       
+        render.sortingOrder = 1;
+
         dragging = false;
-        cardCollider.size = colliderSize;
-        cardCollider.offset = colliderOffset;
+        GameManager.movingCard = false;
         scriptMano.ActualizarMano();
-        usingCard = false;
-        transform.eulerAngles = new Vector3(0, 0, 0);
-        transform.localScale = new Vector3(0.45f, 0.45f, 0.45f);
+
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        targetPosition = collision.transform.position;
+        tableScript = collision.GetComponent<TableCards>();
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        tableScript = null;
     }
 
     public void CardUp()
     {
-        if (!usingCard)
+        if (!GameManager.movingCard)
         {
             anim.SetBool("ShowCard", true);
             actualLayer = render.sortingOrder;
@@ -94,10 +124,28 @@ public class CardScript : MonoBehaviour
 
     public void CardDown()
     {
-        if (!usingCard)
+        if (!GameManager.movingCard)
         {
             anim.SetBool("ShowCard", false);
             render.sortingOrder = actualLayer;
         }
+    }
+    IEnumerator MoveFromTo(Vector3 start, Vector3 end, float duration)
+    {
+        float elapsedTime = 0;
+        while (elapsedTime < duration)
+        {
+            // Actualiza la posición del objeto
+            parentGameobject.transform.position = Vector3.Lerp(start, end, elapsedTime / duration);
+
+            // Incrementa el tiempo transcurrido
+            elapsedTime += Time.deltaTime;
+
+            // Espera hasta el siguiente frame
+            yield return null;
+        }
+
+        // Asegura que el objeto termine exactamente en la posición final
+        parentGameobject.transform.position = end;
     }
 }
