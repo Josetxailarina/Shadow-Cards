@@ -7,25 +7,95 @@ public class TableCards : MonoBehaviour
     public bool available = true;
     private SpriteRenderer sprite;
     public AttackButton attackButton;
+    public CardStats statsCard;
+    public CardScript scriptCard;
+    public TableCards oppositeCard;
     private void Start()
     {
         sprite = GetComponent<SpriteRenderer>();
+    }
+    public void Attack()
+    {
+        if (oppositeCard != null) //si hay una carta en frente
+        {
+            oppositeCard.statsCard.TakeDamage(statsCard.attack);
+            print("enemy card take " + statsCard.attack + "damage");
+
+            switch (statsCard.element1)
+            {
+                case element.none:
+                    break;
+                case element.fire:
+                    oppositeCard.statsCard.TakeFire();
+
+                    break;
+                case element.water:
+                    oppositeCard.statsCard.TakeWater();
+
+                    break;
+                case element.wind:
+                    oppositeCard.statsCard.TakeWind();
+
+                    break;
+                default:
+                    break;
+            }
+            switch (statsCard.element2)
+            {
+                case element.none:
+                    break;
+                case element.fire:
+                    oppositeCard.statsCard.TakeFire();
+
+                    break;
+                case element.water:
+                    oppositeCard.statsCard.TakeWater();
+
+                    break;
+                case element.wind:
+                    oppositeCard.statsCard.TakeWind();
+
+                    break;
+                default:
+                    break;
+            }
+        }
+        else
+        {
+            //atacamos al boss
+            print("boss take " + statsCard.attack + "damage");
+        }
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (GameManager.movingCard)
         {
 
-
-            if (available)
+            if (collision.CompareTag("Animal"))
             {
-                sprite.enabled = true;
-                sprite.color = Color.green;
+                if (available)
+                {
+                    sprite.enabled = true;
+                    sprite.color = Color.green;
+                }
+                else
+                {
+                    sprite.enabled = true;
+                    sprite.color = Color.red;
+                }
             }
-            else
+            else if(collision.CompareTag("Potion"))
             {
-                sprite.enabled = true;
-                sprite.color = Color.red;
+                if (!available)
+                {
+                    sprite.enabled = true;
+                    sprite.color = Color.green;
+                }
+                else
+                {
+                    sprite.enabled = true;
+                    sprite.color = Color.red;
+                }
             }
         }
 

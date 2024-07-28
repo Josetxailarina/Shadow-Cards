@@ -4,15 +4,12 @@ using UnityEngine;
 
 public class AttackButton : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
+    public TableCards tableScript;
+
+    private void OnMouseDown()
     {
-        
+        tableScript.scriptCard.anim.SetTrigger("Attack");
+        gameObject.SetActive(false);
     }
 }

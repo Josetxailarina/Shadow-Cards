@@ -64,7 +64,7 @@ GameObject:
   - component: {fileID: 7999774976899680676}
   m_Layer: 3
   m_Name: CARD CUERVO
-  m_TagString: Untagged
+  m_TagString: Animal
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

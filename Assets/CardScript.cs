@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CardScript : MonoBehaviour
 {
-    private Animator anim;
+    public Animator anim;
     private int actualLayer;
     private SpriteRenderer render;
     private bool dragging = false;
@@ -55,7 +55,10 @@ public class CardScript : MonoBehaviour
     {
         CardUp();
     }
-
+    public void Attack()
+    {
+        tableScript.Attack();
+    }
     private void OnMouseExit()
     {
         CardDown();
@@ -69,7 +72,7 @@ public class CardScript : MonoBehaviour
         cardCollider.size = new Vector2(0.2f, 0.2f);
         cardCollider.offset = new Vector2(0, 0);
         anim.SetBool("ShowCard", false);
-        transform.eulerAngles = new Vector3(33.55f, 0, 0);
+        transform.parent.eulerAngles = new Vector3(33.55f, 0, 0);
         transform.localScale = new Vector3(0.35f, 0.35f, 0.35f);
         
     }
@@ -81,6 +84,8 @@ public class CardScript : MonoBehaviour
         {
             tableScript.available = false;
             tableScript.ActivateButton();
+            tableScript.statsCard = transform.parent.GetComponent<CardStats>();
+            tableScript.scriptCard = this;
             transform.parent.parent = tableScript.gameObject.transform;
             StartCoroutine(MoveFromTo(parentGameobject.transform.position, targetPosition, 0.15f));
             cardCollider.enabled = false;
@@ -90,7 +95,7 @@ public class CardScript : MonoBehaviour
 
             cardCollider.size = colliderSize;
             cardCollider.offset = colliderOffset;
-            transform.eulerAngles = new Vector3(0, 0, 0);
+            transform.parent.eulerAngles = new Vector3(0, 0, 0);
             transform.localScale = new Vector3(0.45f, 0.45f, 0.45f);
         }
        
@@ -108,7 +113,11 @@ public class CardScript : MonoBehaviour
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        tableScript = null;
+        if (cardCollider.enabled)
+        {
+            tableScript = null;
+
+        }
     }
 
     public void CardUp()
