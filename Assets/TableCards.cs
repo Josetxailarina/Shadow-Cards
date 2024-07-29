@@ -8,7 +8,6 @@ public class TableCards : MonoBehaviour
     private SpriteRenderer sprite;
     public AttackButton attackButton;
     public CardStats statsCard;
-    public CardScript scriptCard;
     public TableCards oppositeCard;
     private void Start()
     {
@@ -16,7 +15,7 @@ public class TableCards : MonoBehaviour
     }
     public void Attack()
     {
-        if (oppositeCard != null) //si hay una carta en frente
+        if (!oppositeCard.available) //si hay una carta en frente
         {
             oppositeCard.statsCard.TakeDamage(statsCard.attack);
             print("enemy card take " + statsCard.attack + "damage");

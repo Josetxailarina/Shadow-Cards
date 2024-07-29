@@ -183,6 +183,10 @@ PrefabInstance:
       propertyPath: attackButton
       value: 
       objectReference: {fileID: 1913882208}
+    - target: {fileID: 2166759631953831760, guid: 66d399514ae02cd4dbea4ded47663068, type: 3}
+      propertyPath: oppositeCard
+      value: 
+      objectReference: {fileID: 1319419180}
     - target: {fileID: 3218163233727262893, guid: 66d399514ae02cd4dbea4ded47663068, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.x
       value: 5
@@ -384,6 +388,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   anim: {fileID: 0}
+  render: {fileID: 0}
 --- !u!95 &142728246
 Animator:
   serializedVersion: 5
@@ -455,6 +460,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy1 (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 5239635995299841295, guid: a383c173c8222c84087bbc7a8b836637, type: 3}
+      propertyPath: oppositeCard
+      value: 
+      objectReference: {fileID: 1215772389}
     - target: {fileID: 6896006218369616341, guid: a383c173c8222c84087bbc7a8b836637, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1.61
@@ -500,6 +509,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a383c173c8222c84087bbc7a8b836637, type: 3}
+--- !u!114 &267123059 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5239635995299841295, guid: a383c173c8222c84087bbc7a8b836637, type: 3}
+  m_PrefabInstance: {fileID: 1698595807}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a1f3750f107545bac93c8e1b73773, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &272618143
 GameObject:
   m_ObjectHideFlags: 0
@@ -540,6 +560,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6896006218369616341, guid: a383c173c8222c84087bbc7a8b836637, type: 3}
   m_PrefabInstance: {fileID: 262479749}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &318287677 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5239635995299841295, guid: a383c173c8222c84087bbc7a8b836637, type: 3}
+  m_PrefabInstance: {fileID: 262479749}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a1f3750f107545bac93c8e1b73773, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &343431701
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -551,18 +582,6 @@ PrefabInstance:
     - target: {fileID: 1267791108907225565, guid: dc30aaafd4b00f24cbc6bce34691416f, type: 3}
       propertyPath: m_Name
       value: Card (1)
-      objectReference: {fileID: 0}
-    - target: {fileID: 2043867776416638833, guid: dc30aaafd4b00f24cbc6bce34691416f, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2043867776416638833, guid: dc30aaafd4b00f24cbc6bce34691416f, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2043867776416638833, guid: dc30aaafd4b00f24cbc6bce34691416f, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3354563205899954211, guid: dc30aaafd4b00f24cbc6bce34691416f, type: 3}
       propertyPath: m_LocalPosition.x
@@ -707,6 +726,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   anim: {fileID: 0}
+  render: {fileID: 0}
 --- !u!95 &347551974
 Animator:
   serializedVersion: 5
@@ -1422,6 +1442,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   anim: {fileID: 0}
+  render: {fileID: 0}
 --- !u!95 &547553856
 Animator:
   serializedVersion: 5
@@ -1579,6 +1600,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   anim: {fileID: 0}
+  render: {fileID: 0}
 --- !u!95 &584229940
 Animator:
   serializedVersion: 5
@@ -1638,6 +1660,56 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 584229936}
   m_CullTransparentMesh: 1
+--- !u!1 &588725079
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 588725081}
+  - component: {fileID: 588725080}
+  m_Layer: 0
+  m_Name: Enemy
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &588725080
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 588725079}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceda379a01654bf42b70eb9cb1639221, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefabCard: {fileID: 3839959151897377989, guid: 09728e8b666f8f14ba667e944e0d7963, type: 3}
+  table1: {fileID: 1402994997}
+  table2: {fileID: 1319419180}
+  table3: {fileID: 318287677}
+  table4: {fileID: 267123059}
+  duration: 1
+--- !u!4 &588725081
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 588725079}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.05, y: 3.5, z: -9.886683}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &664413654 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6896006218369616341, guid: a383c173c8222c84087bbc7a8b836637, type: 3}
@@ -1877,6 +1949,10 @@ PrefabInstance:
       propertyPath: attackButton
       value: 
       objectReference: {fileID: 714965862}
+    - target: {fileID: 2166759631953831760, guid: 66d399514ae02cd4dbea4ded47663068, type: 3}
+      propertyPath: oppositeCard
+      value: 
+      objectReference: {fileID: 267123059}
     - target: {fileID: 3218163233727262893, guid: 66d399514ae02cd4dbea4ded47663068, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.x
       value: 5
@@ -2011,7 +2087,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: -50
-  m_Sprite: {fileID: 21300000, guid: 02325d423328b8e4ea63994d4dd6449d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 79a8811f0a19e8142b9d0fdcd7355b48, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -2135,6 +2211,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   anim: {fileID: 0}
+  render: {fileID: 0}
 --- !u!95 &1069878498
 Animator:
   serializedVersion: 5
@@ -2254,7 +2331,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: acdb4dc6e5a04154ba5c91e3f96935a9, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c921e9152c02f414faa4be349a5c36b6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -2452,6 +2529,10 @@ PrefabInstance:
       propertyPath: attackButton
       value: 
       objectReference: {fileID: 418052728}
+    - target: {fileID: 2166759631953831760, guid: 66d399514ae02cd4dbea4ded47663068, type: 3}
+      propertyPath: oppositeCard
+      value: 
+      objectReference: {fileID: 318287677}
     - target: {fileID: 3218163233727262893, guid: 66d399514ae02cd4dbea4ded47663068, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.x
       value: 5
@@ -2504,11 +2585,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef8a1f3750f107545bac93c8e1b73773, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1319419180 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5239635995299841295, guid: a383c173c8222c84087bbc7a8b836637, type: 3}
+  m_PrefabInstance: {fileID: 1821816842}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a1f3750f107545bac93c8e1b73773, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1402994996 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6896006218369616341, guid: a383c173c8222c84087bbc7a8b836637, type: 3}
   m_PrefabInstance: {fileID: 7032943211738668850}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1402994997 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5239635995299841295, guid: a383c173c8222c84087bbc7a8b836637, type: 3}
+  m_PrefabInstance: {fileID: 7032943211738668850}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a1f3750f107545bac93c8e1b73773, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1418754931
 GameObject:
   m_ObjectHideFlags: 0
@@ -2638,6 +2741,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy1 (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 5239635995299841295, guid: a383c173c8222c84087bbc7a8b836637, type: 3}
+      propertyPath: oppositeCard
+      value: 
+      objectReference: {fileID: 947235585}
     - target: {fileID: 6896006218369616341, guid: a383c173c8222c84087bbc7a8b836637, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.06
@@ -2700,6 +2807,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy1 (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 5239635995299841295, guid: a383c173c8222c84087bbc7a8b836637, type: 3}
+      propertyPath: oppositeCard
+      value: 
+      objectReference: {fileID: 111685740}
     - target: {fileID: 6896006218369616341, guid: a383c173c8222c84087bbc7a8b836637, type: 3}
       propertyPath: m_LocalPosition.x
       value: -3.28
@@ -3048,6 +3159,10 @@ PrefabInstance:
       propertyPath: attackButton
       value: 
       objectReference: {fileID: 4866459608224546386}
+    - target: {fileID: 2166759631953831760, guid: 66d399514ae02cd4dbea4ded47663068, type: 3}
+      propertyPath: oppositeCard
+      value: 
+      objectReference: {fileID: 1402994997}
     - target: {fileID: 4983686023496593898, guid: 66d399514ae02cd4dbea4ded47663068, type: 3}
       propertyPath: m_Name
       value: Card1
@@ -3151,9 +3266,9 @@ PrefabInstance:
       value: Enemy1
       objectReference: {fileID: 0}
     - target: {fileID: 5239635995299841295, guid: a383c173c8222c84087bbc7a8b836637, type: 3}
-      propertyPath: attackButton
+      propertyPath: oppositeCard
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1300006257}
     - target: {fileID: 6896006218369616341, guid: a383c173c8222c84087bbc7a8b836637, type: 3}
       propertyPath: m_LocalPosition.x
       value: -4.94
@@ -3270,3 +3385,4 @@ SceneRoots:
   - {fileID: 1155664595}
   - {fileID: 1418754933}
   - {fileID: 272618144}
+  - {fileID: 588725081}

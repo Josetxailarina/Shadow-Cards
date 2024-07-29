@@ -9,7 +9,8 @@ public class AttackButton : MonoBehaviour
 
     private void OnMouseDown()
     {
-        tableScript.scriptCard.anim.SetTrigger("Attack");
+        tableScript.statsCard.scriptCard.render.sortingOrder = 20;
+        tableScript.statsCard.scriptCard.anim.SetTrigger("Attack");
         gameObject.SetActive(false);
     }
 }

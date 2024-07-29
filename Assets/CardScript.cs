@@ -6,7 +6,7 @@ public class CardScript : MonoBehaviour
 {
     public Animator anim;
     private int actualLayer;
-    private SpriteRenderer render;
+    public SpriteRenderer render;
     private bool dragging = false;
     private BoxCollider2D cardCollider;
     private Vector2 colliderOffset;
@@ -21,9 +21,12 @@ public class CardScript : MonoBehaviour
     {
         anim = GetComponent<Animator>();
         render = GetComponent<SpriteRenderer>();
-        cardCollider = GetComponent<BoxCollider2D>();
-        colliderOffset = cardCollider.offset;
-        colliderSize = cardCollider.size;
+        cardCollider =  GetComponent<BoxCollider2D>();
+        if (cardCollider != null)
+        {
+            colliderOffset = cardCollider.offset;
+            colliderSize = cardCollider.size;
+        }
     }
 
     private void Start()
@@ -59,6 +62,10 @@ public class CardScript : MonoBehaviour
     {
         tableScript.Attack();
     }
+    public void ResetSortingOrder()
+    {
+        render.sortingOrder = 0;
+    }
     private void OnMouseExit()
     {
         CardDown();
@@ -66,14 +73,18 @@ public class CardScript : MonoBehaviour
 
     private void OnMouseDown()
     {
-        render.sortingOrder = 20;
-        dragging = true;
-        GameManager.movingCard = true;
-        cardCollider.size = new Vector2(0.2f, 0.2f);
-        cardCollider.offset = new Vector2(0, 0);
-        anim.SetBool("ShowCard", false);
-        transform.parent.eulerAngles = new Vector3(33.55f, 0, 0);
-        transform.localScale = new Vector3(0.35f, 0.35f, 0.35f);
+        if (!GameManager.movingCard)
+        {
+            render.sortingOrder = 20;
+            dragging = true;
+            GameManager.movingCard = true;
+            cardCollider.size = new Vector2(0.2f, 0.2f);
+            cardCollider.offset = new Vector2(0, 0);
+            anim.SetBool("ShowCard", false);
+            transform.parent.eulerAngles = new Vector3(33.55f, 0, 0);
+            transform.localScale = new Vector3(0.35f, 0.35f, 0.35f);
+        }
+        
         
     }
 
@@ -85,7 +96,7 @@ public class CardScript : MonoBehaviour
             tableScript.available = false;
             tableScript.ActivateButton();
             tableScript.statsCard = transform.parent.GetComponent<CardStats>();
-            tableScript.scriptCard = this;
+            tableScript.statsCard.scriptCard = this;
             transform.parent.parent = tableScript.gameObject.transform;
             StartCoroutine(MoveFromTo(parentGameobject.transform.position, targetPosition, 0.15f));
             cardCollider.enabled = false;

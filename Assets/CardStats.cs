@@ -16,8 +16,14 @@ public class CardStats : MonoBehaviour
     public element element2;
     public int health;
     public int attack;
+    public CardScript scriptCard;
 
-  public void TakeDamage(int damage)
+    private void Awake()
+    {
+        scriptCard = GetComponentInChildren<CardScript>();
+    }
+
+    public void TakeDamage(int damage)
     {
         health -= damage;
     }
