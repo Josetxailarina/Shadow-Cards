@@ -20,6 +20,7 @@ public class ManoScript : MonoBehaviour
 
     private IEnumerator ActualizarManoCoroutine()
     {
+        yield return new WaitForEndOfFrame();
         Transform[] cards = new Transform[transform.childCount];
         for (int i = 0; i < transform.childCount; i++)
         {

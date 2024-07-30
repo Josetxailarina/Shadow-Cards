@@ -16,6 +16,7 @@ public class CardScript : MonoBehaviour
     private ManoScript scriptMano;
     private Vector3 targetPosition;
     private TableCards tableScript;
+    public Element element = Element.none;
 
     private void Awake()
     {
@@ -73,7 +74,7 @@ public class CardScript : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (!GameManager.movingCard)
+        if (!GameManager.autoMove)
         {
             render.sortingOrder = 20;
             dragging = true;
@@ -91,7 +92,7 @@ public class CardScript : MonoBehaviour
     private void OnMouseUp()
     {
 
-        if (tableScript != null && tableScript.available)
+        if (element == Element.none && tableScript != null && tableScript.available)
         {
             tableScript.available = false;
             tableScript.ActivateButton();
@@ -100,6 +101,11 @@ public class CardScript : MonoBehaviour
             transform.parent.parent = tableScript.gameObject.transform;
             StartCoroutine(MoveFromTo(parentGameobject.transform.position, targetPosition, 0.15f));
             cardCollider.enabled = false;
+        }
+        else if (element != Element.none && tableScript != null && !tableScript.available && tableScript.statsCard.element2 == Element.none && tableScript.statsCard.element1 != element)
+        {
+            tableScript.statsCard.AddElement(element);
+            Destroy(transform.parent.gameObject);
         }
        else 
         {
@@ -121,6 +127,14 @@ public class CardScript : MonoBehaviour
     {
         targetPosition = collision.transform.position;
         tableScript = collision.GetComponent<TableCards>();
+        if (element != Element.none && tableScript != null && !tableScript.available && tableScript.statsCard.element2 == Element.none && tableScript.statsCard.element1 != element)
+        {
+            tableScript.GoGreen();
+        }
+        else
+        {
+            tableScript.GoRed();
+        }
     }
     private void OnTriggerExit2D(Collider2D collision)
     {

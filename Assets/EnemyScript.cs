@@ -15,7 +15,7 @@ public class EnemyScript : MonoBehaviour
     public float duration;
     private void Start()
     {
-        GameManager.movingCard = true;
+        GameManager.autoMove = true;
         StartCoroutine(SacarCartas());
     }
     IEnumerator SacarCartas()
@@ -26,7 +26,7 @@ public class EnemyScript : MonoBehaviour
         yield return new WaitForSecondsRealtime(0.5f);
         StartCoroutine(InstantiateAndMoveCoroutine(prefabCard, table4));
         yield return new WaitForSecondsRealtime(2f);
-        GameManager.movingCard = false;
+        GameManager.autoMove = false;
     }
     private IEnumerator InstantiateAndMoveCoroutine(GameObject Card, TableCards table)
     {

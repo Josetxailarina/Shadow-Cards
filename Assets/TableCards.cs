@@ -22,17 +22,17 @@ public class TableCards : MonoBehaviour
 
             switch (statsCard.element1)
             {
-                case element.none:
+                case Element.none:
                     break;
-                case element.fire:
+                case Element.fire:
                     oppositeCard.statsCard.TakeFire();
 
                     break;
-                case element.water:
+                case Element.water:
                     oppositeCard.statsCard.TakeWater();
 
                     break;
-                case element.wind:
+                case Element.wind:
                     oppositeCard.statsCard.TakeWind();
 
                     break;
@@ -41,17 +41,17 @@ public class TableCards : MonoBehaviour
             }
             switch (statsCard.element2)
             {
-                case element.none:
+                case Element.none:
                     break;
-                case element.fire:
+                case Element.fire:
                     oppositeCard.statsCard.TakeFire();
 
                     break;
-                case element.water:
+                case Element.water:
                     oppositeCard.statsCard.TakeWater();
 
                     break;
-                case element.wind:
+                case Element.wind:
                     oppositeCard.statsCard.TakeWind();
 
                     break;
@@ -83,21 +83,19 @@ public class TableCards : MonoBehaviour
                     sprite.color = Color.red;
                 }
             }
-            else if(collision.CompareTag("Potion"))
-            {
-                if (!available)
-                {
-                    sprite.enabled = true;
-                    sprite.color = Color.green;
-                }
-                else
-                {
-                    sprite.enabled = true;
-                    sprite.color = Color.red;
-                }
-            }
+           
         }
 
+    }
+    public void GoRed()
+    {
+        sprite.enabled = true;
+        sprite.color = Color.red;
+    }
+    public void GoGreen()
+    {
+        sprite.enabled = true;
+        sprite.color = Color.green;
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
