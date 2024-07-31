@@ -65,10 +65,10 @@ public class ManoScript : MonoBehaviour
             cards[i].localPosition = targetPositions[i];
 
             // Ajustar el order in layer del SpriteRenderer
-            SpriteRenderer sr = cards[i].GetComponentInChildren<SpriteRenderer>();
+            CardScript sr = cards[i].GetComponentInChildren<CardScript>();
             if (sr != null)
             {
-                sr.sortingOrder = i + 1;
+                sr.SortingOrderUp(i + 1);
             }
         }
     }

@@ -41,7 +41,7 @@ public class MontonCartasScript : MonoBehaviour
     IEnumerator SacarIniciales()
     {
         GameManager.autoMove = true;
-        yield return new WaitForSecondsRealtime(1);
+        yield return new WaitForSecondsRealtime(0.5f);
         SacarCarta(rat);
         yield return new WaitForSecondsRealtime(0.3f);
         SacarCartaRandom();
@@ -51,10 +51,13 @@ public class MontonCartasScript : MonoBehaviour
         SacarCartaRandom();
         yield return new WaitForSecondsRealtime(0.3f);
         SacarCartaRandom();
+        GameManager.autoMove = false;
+
     }
     private void OnMouseDown()
     {
         SacarCartaRandom();
+        print(GameManager.autoMove);
     }
     public void SacarCartaRandom()
     {

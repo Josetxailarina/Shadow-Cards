@@ -1,12 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class CardScript : MonoBehaviour
 {
     public Animator anim;
     private int actualLayer;
-    public SpriteRenderer render;
+    public SpriteRenderer renderCard;
+    public SpriteRenderer renderElement;
+    public TextMeshPro lifeText;
+
     private bool dragging = false;
     private BoxCollider2D cardCollider;
     private Vector2 colliderOffset;
@@ -15,14 +19,15 @@ public class CardScript : MonoBehaviour
     private GameObject parentGameobject;
     private ManoScript scriptMano;
     private Vector3 targetPosition;
-    private TableCards tableScript;
+    public TableCards tableScript;
+    private CardStats cardStats;
     public Element element = Element.none;
+
 
     private void Awake()
     {
         anim = GetComponent<Animator>();
-        render = GetComponent<SpriteRenderer>();
-        cardCollider =  GetComponent<BoxCollider2D>();
+        cardCollider = GetComponent<BoxCollider2D>();
         if (cardCollider != null)
         {
             colliderOffset = cardCollider.offset;
@@ -35,6 +40,7 @@ public class CardScript : MonoBehaviour
         mainCamera = Camera.main;
         parentGameobject = transform.parent.gameObject;
         scriptMano = FindObjectOfType<ManoScript>();
+        cardStats = GetComponentInParent<CardStats>();
     }
 
     private void Update()
@@ -54,6 +60,10 @@ public class CardScript : MonoBehaviour
             Debug.Log("Object Position: " + transform.position);
         }
     }
+    public void DeactivateCollider()
+    {
+        cardCollider.enabled = false;
+    }
 
     private void OnMouseEnter()
     {
@@ -65,7 +75,15 @@ public class CardScript : MonoBehaviour
     }
     public void ResetSortingOrder()
     {
-        render.sortingOrder = 0;
+        renderCard.sortingOrder = 1;
+        renderElement.sortingOrder = renderCard.sortingOrder + 1;
+        lifeText.sortingOrder = renderCard.sortingOrder + 1;
+    }
+    public void SortingOrderUp(int Order)
+    {
+        renderCard.sortingOrder = Order;
+        renderElement.sortingOrder = Order + 1;
+        lifeText.sortingOrder = Order + 1;
     }
     private void OnMouseExit()
     {
@@ -74,54 +92,68 @@ public class CardScript : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (!GameManager.autoMove)
+        if (ContadoresScript.mana >= cardStats.cost)
         {
-            render.sortingOrder = 20;
-            dragging = true;
-            GameManager.movingCard = true;
-            cardCollider.size = new Vector2(0.2f, 0.2f);
-            cardCollider.offset = new Vector2(0, 0);
-            anim.SetBool("ShowCard", false);
-            transform.parent.eulerAngles = new Vector3(33.55f, 0, 0);
-            transform.localScale = new Vector3(0.35f, 0.35f, 0.35f);
+
+
+            if (!GameManager.autoMove)
+            {
+                SortingOrderUp(20);
+                dragging = true;
+                GameManager.movingCard = true;
+                cardCollider.size = new Vector2(0.2f, 0.2f);
+                cardCollider.offset = new Vector2(0, 0);
+                anim.SetBool("ShowCard", false);
+                transform.parent.eulerAngles = new Vector3(33.55f, 0, 0);
+                transform.localScale = new Vector3(0.35f, 0.35f, 0.35f);
+            }
         }
-        
-        
+        else
+        {
+            ContadoresScript.ManaAnim();
+            print("no mana");
+        }
+
+
     }
 
     private void OnMouseUp()
     {
-
-        if (element == Element.none && tableScript != null && tableScript.available)
-        {
-            tableScript.available = false;
-            tableScript.ActivateButton();
-            tableScript.statsCard = transform.parent.GetComponent<CardStats>();
-            tableScript.statsCard.scriptCard = this;
-            transform.parent.parent = tableScript.gameObject.transform;
-            StartCoroutine(MoveFromTo(parentGameobject.transform.position, targetPosition, 0.15f));
-            cardCollider.enabled = false;
-        }
-        else if (element != Element.none && tableScript != null && !tableScript.available && tableScript.statsCard.element2 == Element.none && tableScript.statsCard.element1 != element)
-        {
-            tableScript.statsCard.AddElement(element);
-            Destroy(transform.parent.gameObject);
-        }
-       else 
+        if (GameManager.movingCard)
         {
 
-            cardCollider.size = colliderSize;
-            cardCollider.offset = colliderOffset;
-            transform.parent.eulerAngles = new Vector3(0, 0, 0);
-            transform.localScale = new Vector3(0.45f, 0.45f, 0.45f);
+
+            if (element == Element.none && tableScript != null && tableScript.available)
+            {
+                tableScript.available = false;
+                tableScript.ActivateButton();
+                tableScript.statsCard = transform.parent.GetComponent<CardStats>();
+                tableScript.statsCard.scriptCard = this;
+                transform.parent.parent = tableScript.gameObject.transform;
+                StartCoroutine(MoveFromTo(parentGameobject.transform.position, targetPosition, 0.15f));
+                cardCollider.enabled = false;
+                ContadoresScript.BajarMana(cardStats.cost);
+            }
+            else if (element != Element.none && tableScript != null && !tableScript.available && tableScript.statsCard.element2 == Element.none && tableScript.statsCard.element1 != element)
+            {
+                tableScript.statsCard.AddElement(element);
+                ContadoresScript.BajarMana(cardStats.cost);
+                Destroy(transform.parent.gameObject);
+            }
+            else
+            {
+
+                cardCollider.size = colliderSize;
+                cardCollider.offset = colliderOffset;
+                transform.parent.eulerAngles = new Vector3(0, 0, 0);
+                transform.localScale = new Vector3(0.45f, 0.45f, 0.45f);
+            }
+
+            ResetSortingOrder();
+            dragging = false;
+            GameManager.movingCard = false;
+            scriptMano.ActualizarMano();
         }
-       
-        render.sortingOrder = 1;
-
-        dragging = false;
-        GameManager.movingCard = false;
-        scriptMano.ActualizarMano();
-
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -150,10 +182,10 @@ public class CardScript : MonoBehaviour
         if (!GameManager.movingCard)
         {
             anim.SetBool("ShowCard", true);
-            actualLayer = render.sortingOrder;
-            render.sortingOrder = 20;
+            actualLayer = renderCard.sortingOrder;
+            SortingOrderUp(20);
         }
-        
+
     }
 
     public void CardDown()
@@ -161,7 +193,7 @@ public class CardScript : MonoBehaviour
         if (!GameManager.movingCard)
         {
             anim.SetBool("ShowCard", false);
-            render.sortingOrder = actualLayer;
+            SortingOrderUp(actualLayer);
         }
     }
     IEnumerator MoveFromTo(Vector3 start, Vector3 end, float duration)

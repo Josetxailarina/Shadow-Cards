@@ -16,6 +16,7 @@ public class CardStats : MonoBehaviour
     public Element element2;
     public int health;
     public int attack;
+    public int cost;
     public CardScript scriptCard;
     public SpriteRenderer elementObject;
     public Sprite[] spritesElements;
@@ -28,6 +29,16 @@ public class CardStats : MonoBehaviour
     public void TakeDamage(int damage)
     {
         health -= damage;
+        scriptCard.lifeText.text = health.ToString();
+
+        if (health <= 0)
+        {
+            print("me muero");
+            health = 0;
+            scriptCard.tableScript.available = true;
+            scriptCard.tableScript.statsCard = null;
+            Destroy(gameObject);
+        }
     }
     public void TakeFire()
     {
@@ -97,6 +108,7 @@ public class CardStats : MonoBehaviour
                     if (ElementAdded == Element.wind)
                     {
                         elementObject.sprite = spritesElements[5];
+                        scriptCard.tableScript.scriptMuro.gameObject.SetActive(true);
                     }
                     else if (ElementAdded == Element.fire)
                     {
@@ -112,6 +124,8 @@ public class CardStats : MonoBehaviour
                     else if (ElementAdded == Element.water)
                     {
                         elementObject.sprite = spritesElements[5];
+                        scriptCard.tableScript.scriptMuro.gameObject.SetActive(true);
+
 
                     }
                     break;
