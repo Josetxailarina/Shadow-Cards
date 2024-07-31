@@ -30,7 +30,43 @@ public class EnemyScript : MonoBehaviour
     public void Turn1()
     {
         GameManager.autoMove = true;
-        StartCoroutine(SacarCartas());
+        switch (ScriptTurn.turn)
+        {
+            case 1:
+                StartCoroutine(SacarTurno1());
+                break;
+            case 2:
+                StartCoroutine(SacarTurno2());
+                break;
+            case 3:
+                StartCoroutine(SacarTurno3());
+                break;
+            case 4:
+                StartCoroutine(SacarTurno4());
+                break;
+            case 5:
+                StartCoroutine(SacarTurno5());
+                break;
+            case 6:
+                StartCoroutine(SacarTurno6());
+                break;
+            case 7:
+                StartCoroutine(SacarTurno7());
+                break;
+            case 8:
+                StartCoroutine(SacarTurno8());
+                break;
+            case 9:
+                StartCoroutine(SacarTurno9());
+                break;
+            case 10:
+                StartCoroutine(SacarTurno10());
+                break;
+            default:
+                StartCoroutine(SacarTurno10());
+                break;
+        }
+
     }
     IEnumerator Attack()
     {
@@ -55,25 +91,150 @@ public class EnemyScript : MonoBehaviour
             table4.statsCard.scriptCard.anim.SetTrigger("EnemyAttack");
             yield return new WaitForSecondsRealtime(0.8f);
         }
-        turnScript.GoLight();
+        turnScript.NewTurn();
         GameManager.autoMove = false;
     }
-    IEnumerator SacarCartas()
+    IEnumerator SacarTurno1()
     {
-        yield return new WaitForSecondsRealtime(0.8f);
+        yield return new WaitForSecondsRealtime(0.5f);
 
         StartCoroutine(InstantiateAndMoveCoroutine(rat, table1));
             yield return new WaitForSecondsRealtime(0.5f);
         
         StartCoroutine(InstantiateAndMoveCoroutine(rat, table4));
-        yield return new WaitForSecondsRealtime(2f);
+        yield return new WaitForSecondsRealtime(0.5f);
         StartCoroutine(Attack());
     }
+    IEnumerator SacarTurno2()
+    {
+        yield return new WaitForSecondsRealtime(0.5f);
+
+        
+
+        StartCoroutine(InstantiateAndMoveCoroutine(cat, table3));
+        yield return new WaitForSecondsRealtime(0.5f);
+        StartCoroutine(Attack());
+    }
+    IEnumerator SacarTurno3()
+    {
+        yield return new WaitForSecondsRealtime(0.5f);
+
+
+
+        StartCoroutine(InstantiateAndMoveCoroutine(elephant, table2));
+        yield return new WaitForSecondsRealtime(0.5f);
+        StartCoroutine(Attack());
+    }
+    IEnumerator SacarTurno4()
+    {
+        yield return new WaitForSecondsRealtime(0.5f);
+
+
+
+        StartCoroutine(InstantiateAndMoveCoroutine(horse, table4));
+        yield return new WaitForSecondsRealtime(0.5f);
+        StartCoroutine(InstantiateAndMoveCoroutine(cat, table1));
+        yield return new WaitForSecondsRealtime(0.5f);
+        StartCoroutine(Attack());
+    }
+    IEnumerator SacarTurno5()
+    {
+        yield return new WaitForSecondsRealtime(0.5f);
+
+
+
+        
+        StartCoroutine(InstantiateAndMoveCoroutine(whale, table3));
+        yield return new WaitForSecondsRealtime(0.5f);
+        StartCoroutine(Attack());
+    }
+    IEnumerator SacarTurno6()
+    {
+        yield return new WaitForSecondsRealtime(0.5f);
+
+
+
+
+        StartCoroutine(InstantiateAndMoveCoroutine(dog, table2));
+        yield return new WaitForSecondsRealtime(0.5f);
+        StartCoroutine(InstantiateAndMoveCoroutine(horse, table1));
+        yield return new WaitForSecondsRealtime(0.5f);
+        table3.statsCard.AddElement(Element.wind);
+        yield return new WaitForSecondsRealtime(0.5f);
+
+        StartCoroutine(Attack());
+    }
+    IEnumerator SacarTurno7()
+    {
+        yield return new WaitForSecondsRealtime(0.5f);
+
+
+
+
+        StartCoroutine(InstantiateAndMoveCoroutine(effigy, table4));
+        
+        yield return new WaitForSecondsRealtime(0.5f);
+        table4.statsCard.AddElement(Element.fire);
+        yield return new WaitForSecondsRealtime(0.5f);
+
+        StartCoroutine(Attack());
+    }
+    IEnumerator SacarTurno8()
+    {
+        yield return new WaitForSecondsRealtime(0.5f);
+
+
+
+
+        StartCoroutine(InstantiateAndMoveCoroutine(dragon, table2));
+        yield return new WaitForSecondsRealtime(0.5f);
+        
+        
+        StartCoroutine(Attack());
+    }
+    IEnumerator SacarTurno9()
+    {
+        yield return new WaitForSecondsRealtime(0.5f);
+
+
+
+
+        StartCoroutine(InstantiateAndMoveCoroutine(whale, table1));
+        yield return new WaitForSecondsRealtime(0.5f);
+        table2.statsCard.AddElement(Element.water);
+        yield return new WaitForSecondsRealtime(0.5f);
+
+
+
+        StartCoroutine(Attack());
+    }
+    IEnumerator SacarTurno10()
+    {
+        yield return new WaitForSecondsRealtime(0.5f);
+
+
+
+
+        StartCoroutine(InstantiateAndMoveCoroutine(whale, table3));
+        yield return new WaitForSecondsRealtime(0.5f);
+        StartCoroutine(InstantiateAndMoveCoroutine(dragon, table1));
+        yield return new WaitForSecondsRealtime(0.5f);
+
+
+
+        StartCoroutine(Attack());
+    }
+
     private IEnumerator InstantiateAndMoveCoroutine(GameObject Card, TableCards table)
     {
         // Instancia el prefab en la posición del objeto que tiene el script con rotación identitaria
         GameObject instance = Instantiate(Card, transform.position, Quaternion.identity);
-
+        bool reemplazar = !table.available;
+        GameObject cartaReemplazable = null;
+        if (reemplazar)
+        {
+            cartaReemplazable = table.statsCard.gameObject;
+        }
         // Configura el padre del prefab instanciado
         instance.transform.SetParent(table.gameObject.transform, true);
         instance.transform.localEulerAngles = Vector3.zero;
@@ -108,5 +269,9 @@ public class EnemyScript : MonoBehaviour
         // Asegurarse de que la posición y escala finales sean exactas
         instance.transform.position = endPosition;
         instance.transform.localScale = endScale;
+        if (reemplazar == true)
+        {
+          Destroy(cartaReemplazable);
+        }
     }
 }

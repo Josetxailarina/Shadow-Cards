@@ -9,8 +9,28 @@ public class AttackButton : MonoBehaviour
 
     private void OnMouseDown()
     {
-        tableScript.statsCard.scriptCard.SortingOrderUp(20);
-        tableScript.statsCard.scriptCard.anim.SetTrigger("Attack");
-        gameObject.SetActive(false);
+        if ((tableScript.statsCard.element1 == Element.fire && tableScript.statsCard.element2 == Element.water) || (tableScript.statsCard.element1 == Element.water && tableScript.statsCard.element2 == Element.fire))
+        {
+            if (tableScript.enemyBoard)
+            {
+                tableScript.statsCard.scriptCard.SortingOrderUp(20);
+                tableScript.statsCard.scriptCard.anim.SetTrigger("EnemyDoble");
+                gameObject.SetActive(false);
+            }
+            else
+            {
+
+
+                tableScript.statsCard.scriptCard.SortingOrderUp(20);
+                tableScript.statsCard.scriptCard.anim.SetTrigger("DobleAttack");
+                gameObject.SetActive(false);
+            }
+        }
+        else
+        {
+            tableScript.statsCard.scriptCard.SortingOrderUp(20);
+            tableScript.statsCard.scriptCard.anim.SetTrigger("Attack");
+            gameObject.SetActive(false);
+        }
     }
 }

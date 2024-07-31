@@ -18,8 +18,11 @@ public class MontonCartasScript : MonoBehaviour
     public GameObject wind;
     public GameObject water;
 
+    public AudioSource cardSound;
+
     private Dictionary<GameObject, int> deck = new Dictionary<GameObject, int>();
 
+   
     private void Start()
     {
         // Initialize the deck
@@ -34,7 +37,6 @@ public class MontonCartasScript : MonoBehaviour
         deck[fire] = 3;
         deck[wind] = 3;
         deck[water] = 3;
-
         StartCoroutine(SacarIniciales());
     }
 
@@ -65,6 +67,7 @@ public class MontonCartasScript : MonoBehaviour
         if (card != null)
         {
             SacarCarta(card);
+            cardSound.Play();   
         }
     }
 
@@ -102,6 +105,8 @@ public class MontonCartasScript : MonoBehaviour
 
     public void SacarCarta(GameObject Card)
     {
+        cardSound.Play();
+
         GameObject instance = Instantiate(Card, transform, true);
         instance.transform.SetParent(manoScript.gameObject.transform);
         instance.transform.position = transform.position;

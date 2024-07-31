@@ -7,26 +7,50 @@ public class ScriptTurn : MonoBehaviour
     public EnemyScript enemyScript;
     private AudioSource passAudio;
     private SpriteRenderer sprite;
+    public TableCards[] tableScript;
+    public MontonCartasScript mazoScript;
+    public static int turn;
 
     private void Start()
     {
         passAudio = GetComponent<AudioSource>();
         sprite = GetComponent<SpriteRenderer>();
+        turn = 1;
     }
-    public void GoDark()
+    public void EndTurn()
     {
         sprite.color = new Color(0.25f, 0.25f, 0.25f,1);
     }
-    public void GoLight()
+    public void NewTurn()
     {
+        turn++;
+        if (turn > 10)
+        {
+            ContadoresScript.mana = 10;
+
+        }
+        else
+        {
+            ContadoresScript.mana = turn;
+
+        }
+        ContadoresScript.UpdateStats();
         sprite.color = new Color(1f, 1f, 1f, 1);
+        mazoScript.SacarCartaRandom();
+        foreach (TableCards script in tableScript)
+        {
+            if (!script.available)
+            {
+                script.ActivateButton();
+            }
+        }
     }
     private void OnMouseDown()
     {
         if (GameManager.autoMove == false)
         {
 
-        GoDark();
+        EndTurn();
         GameManager.autoMove = true;
         passAudio.Play();
         enemyScript.Turn1();

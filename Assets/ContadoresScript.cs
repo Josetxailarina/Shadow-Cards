@@ -7,7 +7,7 @@ public class ContadoresScript : MonoBehaviour
 {
     public static int life = 20;
     public static int bossLife = 20;
-    public static int mana = 5;
+    public static int mana = 1;
     public static TextMeshPro lifeText;
     public static TextMeshPro bossLifeText;
     public static TextMeshPro manaText;
@@ -17,6 +17,11 @@ public class ContadoresScript : MonoBehaviour
     public TextMeshPro lifeRef;
     public TextMeshPro bossLifeRef;
     public TextMeshPro manaRef;
+    public GameObject losePanelRef;
+    public GameObject winPanelRef;
+    public static GameObject winPanel;
+    public static GameObject losePanel;
+
     public static AudioSource deniedSound;
     // Start is called before the first frame update
     void Start()
@@ -28,10 +33,23 @@ public class ContadoresScript : MonoBehaviour
         lifeAnim = lifeRef.GetComponent<Animator>();
         bossAnim = bossLifeRef.GetComponent<Animator>();
         manaAnim = manaRef.GetComponent<Animator>();
+        winPanel = winPanelRef;
+        losePanel = losePanelRef;
+        life = 20;
+        bossLife = 20;
+        mana = 1;
         manaText.text = mana.ToString();
         lifeText.text = life.ToString();
         bossLifeText.text = bossLife.ToString();
+        winPanel.SetActive(false);
+        losePanel.SetActive(false);
 
+    }
+    public static void UpdateStats()
+    {
+        manaText.text = mana.ToString();
+        lifeText.text = life.ToString();
+        bossLifeText.text = bossLife.ToString();
     }
 
     public static void BajarVida(int Cantidad)
@@ -39,12 +57,23 @@ public class ContadoresScript : MonoBehaviour
         life -= Cantidad;
         lifeText.text = life.ToString();
         lifeAnim.SetTrigger("Hit");
+        if (life <= 0) 
+        { 
+            losePanel.SetActive(true);
+            GameManager.autoMove = true;
+        }
     }
     public static void BajarVidaBoss(int Cantidad)
     {
         bossLife -= Cantidad;
         bossLifeText.text = bossLife.ToString();
         bossAnim.SetTrigger("Hit");
+        if (bossLife <= 0) 
+        {
+            winPanel.SetActive(true);
+            GameManager.autoMove = true;
+        }
+
     }
     public static void BajarMana(int Cantidad)
     {
@@ -57,4 +86,5 @@ public class ContadoresScript : MonoBehaviour
        manaAnim.SetTrigger("Hit");
 deniedSound.Play();
     }
+
 }

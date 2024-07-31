@@ -71,7 +71,25 @@ public class CardScript : MonoBehaviour
     }
     public void Attack()
     {
+        if ((cardStats.element1 == Element.fire && cardStats.element2 == Element.wind)|| (cardStats.element1 == Element.wind && cardStats.element2 == Element.fire))
+        {
+            StartCoroutine(AttackSides());
+
+        }
+        else
+        {
+            tableScript.Attack();
+
+        }
+    }
+    IEnumerator AttackSides()
+    {
+        tableScript.AttackLeft();
+        yield return new WaitForSecondsRealtime(0.2f);
         tableScript.Attack();
+        yield return new WaitForSecondsRealtime(0.2f);
+
+        tableScript.AttackRight();
     }
     public void ResetSortingOrder()
     {

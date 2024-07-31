@@ -25,27 +25,46 @@ public class CardStats : MonoBehaviour
     {
         scriptCard = GetComponentInChildren<CardScript>();
     }
+    private void Start()
+    {
+        UpdateHealth();
+    }
 
     public void TakeDamage(int damage)
     {
         health -= damage;
-        scriptCard.lifeText.text = health.ToString();
-
+        UpdateHealth();
         if (health <= 0)
         {
-            print("me muero");
-            health = 0;
-            scriptCard.tableScript.available = true;
-            scriptCard.tableScript.statsCard = null;
-            Destroy(gameObject);
+            Muerto();
         }
+    }
+    public void Muerto()
+    {
+        health = 0;
+        if (!scriptCard.tableScript.enemyBoard)
+        {
+            scriptCard.tableScript.DeactivateButton();
+        }
+        scriptCard.tableScript.available = true;
+        scriptCard.tableScript.statsCard = null;
+        Destroy(gameObject);
+    }
+    public void UpdateHealth()
+    {
+        scriptCard.lifeText.text = health.ToString();
+
     }
     public void TakeFire()
     {
         if (element1 == Element.wind|| element2 == Element.wind)
         {
             health -= 2;
-            print("fire damage");
+            UpdateHealth();
+            if (health <= 0)
+            {
+                Muerto();
+            }
         }
     }
     public void TakeWater()
@@ -53,7 +72,11 @@ public class CardStats : MonoBehaviour
         if (element1 == Element.fire || element2 == Element.fire)
         {
             health -= 2;
-            print("water damage");
+            UpdateHealth();
+            if (health <= 0)
+            {
+                Muerto();
+            }
 
         }
     }
@@ -62,7 +85,11 @@ public class CardStats : MonoBehaviour
         if (element1 == Element.water || element2 == Element.water)
         {
             health -= 2;
-            print("wind damage");
+            UpdateHealth();
+            if (health <= 0)
+            {
+                Muerto();
+            }
 
         }
     }
