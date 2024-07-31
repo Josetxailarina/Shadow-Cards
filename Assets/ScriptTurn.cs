@@ -36,7 +36,7 @@ public class ScriptTurn : MonoBehaviour
         }
         ContadoresScript.UpdateStats();
         sprite.color = new Color(1f, 1f, 1f, 1);
-        mazoScript.SacarCartaRandom();
+        mazoScript.Sacar2Random();
         foreach (TableCards script in tableScript)
         {
             if (!script.available)

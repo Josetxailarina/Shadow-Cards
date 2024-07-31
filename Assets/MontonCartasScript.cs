@@ -56,11 +56,11 @@ public class MontonCartasScript : MonoBehaviour
         GameManager.autoMove = false;
 
     }
-    private void OnMouseDown()
-    {
-        SacarCartaRandom();
-        print(GameManager.autoMove);
-    }
+    //private void OnMouseDown()
+    //{
+    //    SacarCartaRandom();
+    //    print(GameManager.autoMove);
+    //}
     public void SacarCartaRandom()
     {
         GameObject card = GetRandomCard();
@@ -69,6 +69,16 @@ public class MontonCartasScript : MonoBehaviour
             SacarCarta(card);
             cardSound.Play();   
         }
+    }
+    public void Sacar2Random()
+    {
+        StartCoroutine(Sacar2Cartas());
+    }
+    IEnumerator Sacar2Cartas()
+    {
+        SacarCartaRandom();
+        yield return new WaitForSecondsRealtime(0.2f);
+        SacarCartaRandom();
     }
 
     private GameObject GetRandomCard()
