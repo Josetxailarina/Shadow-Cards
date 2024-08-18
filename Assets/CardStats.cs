@@ -20,12 +20,7 @@ public class CardStats : MonoBehaviour
     public CardScript scriptCard;
     public SpriteRenderer elementObject;
     public Sprite[] spritesElements;
-    public ParticleSystem fireParticle;
-    public ParticleSystem waterParticle;
-    public ParticleSystem windParticle;
-    public ParticleSystem smokeParticle;
-    public ParticleSystem tornadoParticle;
-    public ParticleSystem iceParticle;
+    
 
     private void Awake()
     {
@@ -34,13 +29,13 @@ public class CardStats : MonoBehaviour
 
     private void Start()
     {
-        UpdateHealth();
+        UpdateStats();
     }
 
     public void TakeDamage(int damage)
     {
         health -= damage;
-        UpdateHealth();
+        UpdateStats();
         if (health <= 0)
         {
             Muerto();
@@ -59,9 +54,11 @@ public class CardStats : MonoBehaviour
         Destroy(gameObject);
     }
 
-    public void UpdateHealth()
+    public void UpdateStats()
     {
         scriptCard.lifeText.text = health.ToString();
+        scriptCard.attackText.text = attack.ToString();
+
     }
 
     public void TakeFire()
@@ -69,7 +66,7 @@ public class CardStats : MonoBehaviour
         if (element1 == Element.wind || element2 == Element.wind)
         {
             health -= 2;
-            UpdateHealth();
+            UpdateStats();
             if (health <= 0)
             {
                 Muerto();
@@ -82,7 +79,7 @@ public class CardStats : MonoBehaviour
         if (element1 == Element.fire || element2 == Element.fire)
         {
             health -= 2;
-            UpdateHealth();
+            UpdateStats();
             if (health <= 0)
             {
                 Muerto();
@@ -95,7 +92,7 @@ public class CardStats : MonoBehaviour
         if (element1 == Element.water || element2 == Element.water)
         {
             health -= 2;
-            UpdateHealth();
+            UpdateStats();
             if (health <= 0)
             {
                 Muerto();
@@ -116,16 +113,25 @@ public class CardStats : MonoBehaviour
             {
                 elementObject.sprite = spritesElements[0];
                 SoundManager.PlayFireEffect(position);
+                attack += 2;
+                UpdateStats();
             }
             else if (ElementAdded == Element.wind)
             {
                 elementObject.sprite = spritesElements[1];
                 SoundManager.PlayWindEffect(position);
+                attack += 1;
+                health += 1;
+                UpdateStats();
+
             }
             else if (ElementAdded == Element.water)
             {
                 elementObject.sprite = spritesElements[2];
                 SoundManager.PlayWaterEffect(position);
+                health += 2;
+                UpdateStats();
+
             }
         }
         else if (element2 == Element.none)
@@ -141,11 +147,17 @@ public class CardStats : MonoBehaviour
                     {
                         elementObject.sprite = spritesElements[3];
                         SoundManager.PlayTornadoEffect(position);
+                        attack += 1;
+                        health += 1;
+                        UpdateStats();
+                        
                     }
                     else if (ElementAdded == Element.water)
                     {
                         elementObject.sprite = spritesElements[4];
                         SoundManager.PlaySmokeEffect(position);
+                        health += 2;
+                        UpdateStats();
                     }
                     break;
                 case Element.water:
@@ -154,11 +166,16 @@ public class CardStats : MonoBehaviour
                         elementObject.sprite = spritesElements[5];
                         scriptCard.tableScript.scriptMuro.gameObject.SetActive(true);
                         SoundManager.PlayIceEffect(position);
+                        attack += 1;
+                        health += 1;
+                        UpdateStats();
                     }
                     else if (ElementAdded == Element.fire)
                     {
                         elementObject.sprite = spritesElements[4];
                         SoundManager.PlaySmokeEffect(position);
+                        attack += 2;
+                        UpdateStats();
                     }
                     break;
                 case Element.wind:
@@ -166,12 +183,16 @@ public class CardStats : MonoBehaviour
                     {
                         elementObject.sprite = spritesElements[3];
                         SoundManager.PlayTornadoEffect(position);
+                        attack += 2;
+                        UpdateStats();
                     }
                     else if (ElementAdded == Element.water)
                     {
                         elementObject.sprite = spritesElements[5];
                         scriptCard.tableScript.scriptMuro.gameObject.SetActive(true);
                         SoundManager.PlayIceEffect(position);
+                        health += 2;
+                        UpdateStats();
                     }
                     break;
                 default:

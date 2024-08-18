@@ -10,6 +10,8 @@ public class CardScript : MonoBehaviour
     public SpriteRenderer renderCard;
     public SpriteRenderer renderElement;
     public TextMeshPro lifeText;
+    public TextMeshPro attackText;
+
 
     private bool dragging = false;
     private BoxCollider2D cardCollider;
@@ -96,12 +98,16 @@ public class CardScript : MonoBehaviour
         renderCard.sortingOrder = 1;
         renderElement.sortingOrder = renderCard.sortingOrder + 1;
         lifeText.sortingOrder = renderCard.sortingOrder + 1;
+        attackText.sortingOrder = renderCard.sortingOrder + 1;
+
     }
     public void SortingOrderUp(int Order)
     {
         renderCard.sortingOrder = Order;
         renderElement.sortingOrder = Order + 1;
         lifeText.sortingOrder = Order + 1;
+        attackText.sortingOrder = Order + 1;
+
     }
     private void OnMouseExit()
     {
