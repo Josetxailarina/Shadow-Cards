@@ -159,7 +159,7 @@ public class EnemyScript : MonoBehaviour
         yield return new WaitForSecondsRealtime(0.5f);
         StartCoroutine(InstantiateAndMoveCoroutine(horse, table1));
         yield return new WaitForSecondsRealtime(0.5f);
-        table3.statsCard.AddElement(Element.wind);
+        table3.statsCard?.AddElement(Element.wind);
         yield return new WaitForSecondsRealtime(0.5f);
 
         StartCoroutine(Attack());
@@ -174,7 +174,7 @@ public class EnemyScript : MonoBehaviour
         StartCoroutine(InstantiateAndMoveCoroutine(effigy, table4));
         
         yield return new WaitForSecondsRealtime(0.5f);
-        table4.statsCard.AddElement(Element.fire);
+        table4.statsCard?.AddElement(Element.fire);
         yield return new WaitForSecondsRealtime(0.5f);
 
         StartCoroutine(Attack());
@@ -201,7 +201,7 @@ public class EnemyScript : MonoBehaviour
 
         StartCoroutine(InstantiateAndMoveCoroutine(whale, table1));
         yield return new WaitForSecondsRealtime(0.5f);
-        table2.statsCard.AddElement(Element.water);
+        table2.statsCard?.AddElement(Element.water);
         yield return new WaitForSecondsRealtime(0.5f);
 
 

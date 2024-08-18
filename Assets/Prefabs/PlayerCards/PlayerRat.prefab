@@ -185,6 +185,7 @@ MonoBehaviour:
   renderCard: {fileID: 6189975360301291812}
   renderElement: {fileID: 1031725584169445162}
   lifeText: {fileID: 3234600836084300301}
+  tableScript: {fileID: 0}
   element: 0
 --- !u!61 &7999774976899680676
 BoxCollider2D:
@@ -372,7 +373,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -888028806553198393, guid: add8777156a1f3e4caa1085242f7e442, type: 2}
+  - {fileID: -888028806553198393, guid: c92b068201dac2e449c189a2aa8573d1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -416,8 +417,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 2
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: add8777156a1f3e4caa1085242f7e442, type: 2}
-  m_sharedMaterial: {fileID: -888028806553198393, guid: add8777156a1f3e4caa1085242f7e442, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: c92b068201dac2e449c189a2aa8573d1, type: 2}
+  m_sharedMaterial: {fileID: -888028806553198393, guid: c92b068201dac2e449c189a2aa8573d1, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

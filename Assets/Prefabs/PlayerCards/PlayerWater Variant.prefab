@@ -60,6 +60,10 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Potion
       objectReference: {fileID: 0}
+    - target: {fileID: 5814235390234399884, guid: dc30aaafd4b00f24cbc6bce34691416f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6189975360301291812, guid: dc30aaafd4b00f24cbc6bce34691416f, type: 3}
       propertyPath: m_Sprite
       value: 

@@ -22,7 +22,7 @@ public class CardScript : MonoBehaviour
     public TableCards tableScript;
     private CardStats cardStats;
     public Element element = Element.none;
-
+    
 
     private void Awake()
     {
@@ -157,6 +157,7 @@ public class CardScript : MonoBehaviour
                 tableScript.statsCard.AddElement(element);
                 ContadoresScript.BajarMana(cardStats.cost);
                 Destroy(transform.parent.gameObject);
+                //efectos elementales
             }
             else
             {

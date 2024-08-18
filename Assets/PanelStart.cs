@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -12,6 +13,10 @@ public class PanelStart : MonoBehaviour
     public Sprite exitOn;
     public Sprite startOff;
     public Sprite exitOff;
+    public TextMeshProUGUI xText;
+
+    public void RedX() { xText.color = Color.red; }
+    public void WhiteX() { xText.color = Color.white; }
 
     public void StartOn() {startImg.sprite = startOn; }
     public void StartOff() { startImg.sprite = startOff; }

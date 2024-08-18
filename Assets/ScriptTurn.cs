@@ -10,6 +10,7 @@ public class ScriptTurn : MonoBehaviour
     public TableCards[] tableScript;
     public MontonCartasScript mazoScript;
     public static int turn;
+    public GameObject panelSeguridad;
 
     private void Start()
     {
@@ -20,6 +21,21 @@ public class ScriptTurn : MonoBehaviour
     public void EndTurn()
     {
         sprite.color = new Color(0.25f, 0.25f, 0.25f,1);
+        foreach (TableCards script in tableScript)
+        {
+            script.DeactivateButton();
+        }
+    }
+    public void OpenSecurityPanel()
+    {
+        GameManager.autoMove = true;
+        panelSeguridad.SetActive(true);
+    }
+    public void CloseSecurityPanel()
+    {
+        GameManager.autoMove = false;
+
+        panelSeguridad.SetActive(false);
     }
     public void NewTurn()
     {
@@ -49,11 +65,32 @@ public class ScriptTurn : MonoBehaviour
     {
         if (GameManager.autoMove == false)
         {
+            bool anyAttackButtonActive = false;
 
+            foreach (var script in tableScript)
+            {
+                if (script.attackButton.gameObject.activeSelf)
+                {
+                    anyAttackButtonActive = true;
+                    break;
+                }
+            }
+
+            if (anyAttackButtonActive)
+            {
+                OpenSecurityPanel();
+            }
+            else
+            {
+                TerminarTurno();
+            }
+        }
+    }
+    public void TerminarTurno()
+    {
         EndTurn();
         GameManager.autoMove = true;
         passAudio.Play();
         enemyScript.Turn1();
-        }
     }
 }
