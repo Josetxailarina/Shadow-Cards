@@ -24,302 +24,106 @@ public class TableCards : MonoBehaviour
         sprite = GetComponent<SpriteRenderer>();
         hitSound = GetComponent<AudioSource>();
     }
-    public void Attack()
+
+    public void Attack(Direction direction)
     {
+        TableCards targetCard = GetTargetCard(direction);
+        if (targetCard == null) return;
+
         hitSound.Play();
-        if (oppositeCard.protection)
+
+        if (targetCard.protection)
         {
-            oppositeCard.scriptMuro.TakeDamage(statsCard.attack);
+            targetCard.scriptMuro.TakeDamage(statsCard.attack);
         }
         else
         {
-            if (!oppositeCard.available) //si hay una carta en frente
-            {
-                int totalDamage = 0;
-                oppositeCard.statsCard.TakeDamage(statsCard.attack);
-                totalDamage = statsCard.attack;
-                print("enemy card take " + statsCard.attack + "damage");
-                if (oppositeCard.statsCard !=null)
-                {
-
-
-                    switch (statsCard.element1)
-                    {
-                        case Element.none:
-                            break;
-                        case Element.fire:
-                            if (oppositeCard.statsCard.element1 == Element.water || oppositeCard.statsCard.element2 == Element.water)
-                            {
-                                oppositeCard.statsCard.TakeFire();
-                                totalDamage += 2;
-                            }
-                            break;
-                        case Element.water:
-                            if (oppositeCard.statsCard.element1 == Element.wind || oppositeCard.statsCard.element2 == Element.wind)
-                            {
-                                oppositeCard.statsCard.TakeWater();
-                                totalDamage += 2;
-                            }
-                            break;
-                        case Element.wind:
-                            if (oppositeCard.statsCard.element1 == Element.fire || oppositeCard.statsCard.element2 == Element.fire)
-                            {
-                                oppositeCard.statsCard.TakeWind();
-                                totalDamage += 2;
-                            }
-                            break;
-                        default:
-                            break;
-                    }
-                    switch (statsCard.element2)
-                {
-                    case Element.none:
-                        break;
-                    case Element.fire:
-                            if (oppositeCard.statsCard.element1 == Element.wind || oppositeCard.statsCard.element2 == Element.wind)
-                            {
-                                oppositeCard.statsCard.TakeFire();
-                                totalDamage += 2;
-                            }
-                            break;
-                    case Element.water:
-                            if (oppositeCard.statsCard.element1 == Element.fire || oppositeCard.statsCard.element2 == Element.fire)
-                            {
-                                oppositeCard.statsCard.TakeWater();
-                                totalDamage += 2;
-                            }
-                            break;
-                    case Element.wind:
-                            if (oppositeCard.statsCard.element1 == Element.water || oppositeCard.statsCard.element2 == Element.water)
-                            {
-                                oppositeCard.statsCard.TakeWind();
-                                totalDamage += 2;
-                            }
-                            break;
-                    default:
-                        break;
-                }
-                }
-                dmgText.text = "-"+totalDamage.ToString();
-                dmgText.transform.parent.transform.position = oppositeCard.transform.position;
-                dmgAnimator.SetTrigger("Hit");
-            }
-            else if(!enemyBoard)
-            {
-                ContadoresScript.BajarVidaBoss(statsCard.attack);
-                dmgText.text = "-" + statsCard.attack.ToString();
-                dmgText.transform.parent.transform.position = oppositeCard.transform.position;
-                dmgAnimator.SetTrigger("Hit");
-            }
-            else if (enemyBoard)
-            {
-                ContadoresScript.BajarVida(statsCard.attack);
-                dmgText.text = "-" + statsCard.attack.ToString();
-                dmgText.transform.parent.transform.position = oppositeCard.transform.position;
-                dmgAnimator.SetTrigger("Hit");
-            }
+            HandleDamage(targetCard);
         }
     }
-    public void AttackLeft()
+
+    private TableCards GetTargetCard(Direction direction)
     {
-        if (tableLeft != null)
+        switch (direction)
         {
-            hitSound.Play();
-            if (tableLeft.oppositeCard.protection)
-            {
-                tableLeft.oppositeCard.scriptMuro.TakeDamage(statsCard.attack);
-            }
-            else
-            {
-                if (!tableLeft.oppositeCard.available) //si hay una carta en frente
-                {
-                    tableLeft.oppositeCard.statsCard.TakeDamage(statsCard.attack);
-                    print("enemy card take " + statsCard.attack + "damage");
-                    if (tableLeft.oppositeCard.statsCard != null)
-                    {
-                        int totalDamage = 0;
-
-                        switch (statsCard.element1)
-                        {
-                            case Element.none:
-                                break;
-                            case Element.fire:
-                                if (tableLeft.oppositeCard.statsCard.element1 == Element.water || tableLeft.oppositeCard.statsCard.element2 == Element.water)
-                                {
-                                    tableLeft.oppositeCard.statsCard.TakeFire();
-                                    totalDamage += 2;
-                                }
-                                break;
-                            case Element.water:
-                                if (tableLeft.oppositeCard.statsCard.element1 == Element.wind || tableLeft.oppositeCard.statsCard.element2 == Element.wind)
-                                {
-                                    tableLeft.oppositeCard.statsCard.TakeWater();
-                                    totalDamage += 2;
-                                }
-                                break;
-                            case Element.wind:
-                                if (tableLeft.oppositeCard.statsCard.element1 == Element.fire || tableLeft.oppositeCard.statsCard.element2 == Element.fire)
-                                {
-                                    tableLeft.oppositeCard.statsCard.TakeWind();
-                                    totalDamage += 2;
-                                }
-                                break;
-                            default:
-                                break;
-                        }
-                        switch (statsCard.element2)
-                        {
-                            case Element.none:
-                                break;
-                            case Element.fire:
-                                if (tableLeft.oppositeCard.statsCard.element1 == Element.water || tableLeft.oppositeCard.statsCard.element2 == Element.water)
-                                {
-                                    tableLeft.oppositeCard.statsCard.TakeFire();
-                                    totalDamage += 2;
-                                }
-                                break;
-                            case Element.water:
-                                if (tableLeft.oppositeCard.statsCard.element1 == Element.wind || tableLeft.oppositeCard.statsCard.element2 == Element.wind)
-                                {
-                                    tableLeft.oppositeCard.statsCard.TakeWater();
-                                    totalDamage += 2;
-                                }
-                                break;
-                            case Element.wind:
-                                if (tableLeft.oppositeCard.statsCard.element1 == Element.fire || tableLeft.oppositeCard.statsCard.element2 == Element.fire)
-                                {
-                                    tableLeft.oppositeCard.statsCard.TakeWind();
-                                    totalDamage += 2;
-                                }
-                                break;
-                            default:
-                                break;
-                        }
-                        dmgText.text = "-" + totalDamage.ToString();
-                        dmgText.transform.parent.transform.position = tableLeft.oppositeCard.transform.position;
-                        dmgAnimator.SetTrigger("Hit");
-                    }
-                    
-                }
-                else if (!enemyBoard)
-                {
-                    ContadoresScript.BajarVidaBoss(statsCard.attack);
-                    dmgText.text = "-" + statsCard.attack.ToString();
-                    dmgText.transform.parent.transform.position = tableLeft.oppositeCard.transform.position;
-                    dmgAnimator.SetTrigger("Hit");
-                }
-                else if (enemyBoard)
-                {
-                    ContadoresScript.BajarVida(statsCard.attack);
-                    dmgText.text = "-" + statsCard.attack.ToString();
-                    dmgText.transform.parent.transform.position = tableLeft.oppositeCard.transform.position;
-                    dmgAnimator.SetTrigger("Hit");
-                }
-            }
+            case Direction.Center:
+                return oppositeCard;
+            case Direction.Left:
+                return tableLeft?.oppositeCard;
+            case Direction.Right:
+                return tableRight?.oppositeCard;
+            default:
+                return null;
         }
     }
 
-    public void AttackRight()
+    private void HandleDamage(TableCards targetCard)
     {
-        if (tableRight != null)
+        if (!targetCard.available) // Si hay una carta en frente
         {
-            hitSound.Play();
-            if (tableRight.oppositeCard.protection)
-            {
-                tableRight.oppositeCard.scriptMuro.TakeDamage(statsCard.attack);
-            }
-            else
-            {
-                if (!tableRight.oppositeCard.available) //si hay una carta en frente
-                {
-                    tableRight.oppositeCard.statsCard.TakeDamage(statsCard.attack);
-                    print("enemy card take " + statsCard.attack + "damage");
-                    if (tableRight.oppositeCard.statsCard != null)
-                    {
-                        int totalDamage = 0;
-                        switch (statsCard.element1)
-                        {
-                            case Element.none:
-                                break;
-                            case Element.fire:
-                                if (tableRight.oppositeCard.statsCard?.element1 == Element.water || tableRight.oppositeCard.statsCard?.element2 == Element.water)
-                                {
-                                    tableRight.oppositeCard.statsCard.TakeFire();
-                                    totalDamage += 2;
-                                }
-                                break;
-                            case Element.water:
-                                if (tableRight.oppositeCard.statsCard?.element1 == Element.wind || tableRight.oppositeCard.statsCard?.element2 == Element.wind)
-                                {
-                                    tableRight.oppositeCard.statsCard.TakeWater();
-                                    totalDamage += 2;
-                                }
-                                break;
-                            case Element.wind:
-                                if (tableRight.oppositeCard.statsCard?.element1 == Element.fire || tableRight.oppositeCard.statsCard?.element2 == Element.fire)
-                                {
-                                    tableRight.oppositeCard.statsCard.TakeWind();
-                                    totalDamage += 2;
-                                }
-                                break;
-                            default:
-                                break;
-                        }
-                        switch (statsCard.element2)
-                        {
-                            case Element.none:
-                                break;
-                            case Element.fire:
-                                if (tableRight.oppositeCard.statsCard?.element1 == Element.water || tableRight.oppositeCard.statsCard?.element2 == Element.water)
-                                {
-                                    tableRight.oppositeCard.statsCard.TakeFire();
-                                    totalDamage += 2;
-                                }
-                                break;
-                            case Element.water:
-                                if (tableRight.oppositeCard.statsCard?.element1 == Element.wind || tableRight.oppositeCard.statsCard?.element2 == Element.wind)
-                                {
-                                    tableRight.oppositeCard.statsCard.TakeWater();
-                                    totalDamage += 2;
-                                }
-                                break;
-                            case Element.wind:
-                                if (tableRight.oppositeCard.statsCard?.element1 == Element.fire || tableRight.oppositeCard.statsCard?.element2 == Element.fire)
-                                {
-                                    tableRight.oppositeCard.statsCard.TakeWind();
-                                    totalDamage += 2;
-                                }
-                                break;
-                            default:
-                                break;
-                        }
-                        dmgText.text = "-" + totalDamage.ToString();
-                        dmgText.transform.parent.transform.position = tableRight.oppositeCard.transform.position;
-                        dmgAnimator.SetTrigger("Hit");
-                    }
-                }
-                else if (!enemyBoard)
-                {
-                    ContadoresScript.BajarVidaBoss(statsCard.attack);
-                    dmgText.text = "-" + statsCard.attack.ToString();
-                    dmgText.transform.parent.transform.position = tableRight.oppositeCard.transform.position;
-                    dmgAnimator.SetTrigger("Hit");
-                }
-                else if (enemyBoard)
-                {
-                    ContadoresScript.BajarVida(statsCard.attack);
-                    dmgText.text = "-" + statsCard.attack.ToString();
-                    dmgText.transform.parent.transform.position = tableRight.oppositeCard.transform.position;
-                    dmgAnimator.SetTrigger("Hit");
-                }
-            }
+            int totalDamage = statsCard.attack;
+            totalDamage += CalculateElementalDamage(targetCard);
+
+            targetCard.statsCard.TakeDamage(totalDamage);
+
+
+            ShowDamage(targetCard.transform.position, totalDamage);
+        }
+        else if (!enemyBoard)
+        {
+            ContadoresScript.BajarVidaBoss(statsCard.attack);
+            ShowDamage(targetCard.transform.position, statsCard.attack);
+        }
+        else
+        {
+            ContadoresScript.BajarVida(statsCard.attack);
+            ShowDamage(targetCard.transform.position, statsCard.attack);
         }
     }
+
+    private int CalculateElementalDamage(TableCards targetCard)
+    {
+        int elementalBonus = 0;
+
+        elementalBonus += GetElementalBonus(statsCard.element1, targetCard);
+        elementalBonus += GetElementalBonus(statsCard.element2, targetCard);
+
+        return elementalBonus;
+    }
+
+    private int GetElementalBonus(Element element, TableCards targetCard)
+    {
+        switch (element)
+        {
+            case Element.fire:
+                if (IsAffectedByElement(targetCard, Element.wind))  return 2;
+                break;
+            case Element.water:
+                if (IsAffectedByElement(targetCard, Element.fire)) return 2;
+                break;
+            case Element.wind:
+                if (IsAffectedByElement(targetCard, Element.water)) return 2;
+                break;
+        }
+        return 0;
+    }
+
+    private bool IsAffectedByElement(TableCards targetCard, Element element)
+    {
+        return targetCard.statsCard?.element1 == element || targetCard.statsCard?.element2 == element;
+    }
+
+    private void ShowDamage(Vector3 position, int totalDamage)
+    {
+        dmgText.text = "-" + totalDamage.ToString();
+        dmgText.transform.parent.transform.position = position;
+        dmgAnimator.SetTrigger("Hit");
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (GameManager.movingCard)
         {
-
             if (collision.CompareTag("Animal"))
             {
                 if (available)
@@ -333,32 +137,40 @@ public class TableCards : MonoBehaviour
                     sprite.color = Color.red;
                 }
             }
-           
         }
-
     }
+
     public void GoRed()
     {
         sprite.enabled = true;
         sprite.color = Color.red;
     }
+
     public void GoGreen()
     {
         sprite.enabled = true;
         sprite.color = Color.green;
     }
+
     private void OnTriggerExit2D(Collider2D collision)
     {
         sprite.enabled = false;
-
     }
+
     public void ActivateButton()
     {
         attackButton.gameObject.SetActive(true);
     }
+
     public void DeactivateButton()
     {
         attackButton.gameObject.SetActive(false);
     }
+}
 
+public enum Direction
+{
+    Center,
+    Left,
+    Right
 }

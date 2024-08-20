@@ -72,27 +72,42 @@ public class EnemyScript : MonoBehaviour
     {
         if (!table1.available)
         {
-            table1.statsCard.scriptCard.anim.SetTrigger("EnemyAttack");
+            EnemyAttack(table1);
             yield return new WaitForSecondsRealtime(0.8f);
         }
         
         if (!table2.available)
         {
-            table2.statsCard.scriptCard.anim.SetTrigger("EnemyAttack");
+            EnemyAttack(table2);
             yield return new WaitForSecondsRealtime(0.8f);
+            
         }
         if (!table3.available)
         {
-            table3.statsCard.scriptCard.anim.SetTrigger("EnemyAttack");
+            EnemyAttack(table3);
             yield return new WaitForSecondsRealtime(0.8f);
         }
         if (!table4.available)
         {
-            table4.statsCard.scriptCard.anim.SetTrigger("EnemyAttack");
+            EnemyAttack(table4);
             yield return new WaitForSecondsRealtime(0.8f);
         }
         turnScript.NewTurn();
         GameManager.autoMove = false;
+    }
+    public void EnemyAttack(TableCards Table)
+    {
+        if ((Table.statsCard.element1 == Element.fire && Table.statsCard.element2 == Element.water) || (Table.statsCard.element1 == Element.water && Table.statsCard.element2 == Element.fire))
+        {
+            Table.statsCard.scriptCard.anim.SetTrigger("EnemyDoble");
+            print("doble attak");
+        }
+        else
+        {
+            Table.statsCard.scriptCard.anim.SetTrigger("EnemyAttack");
+            print("attak");
+
+        }
     }
     IEnumerator SacarTurno1()
     {

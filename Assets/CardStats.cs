@@ -20,7 +20,7 @@ public class CardStats : MonoBehaviour
     public CardScript scriptCard;
     public SpriteRenderer elementObject;
     public Sprite[] spritesElements;
-    
+    public Color colorBuffText;
 
     private void Awake()
     {
@@ -103,7 +103,25 @@ public class CardStats : MonoBehaviour
     public void AddElement(Element ElementAdded)
     {
         Vector3 position = transform.position;
+        switch (ElementAdded)
+        {
+            case Element.none:
+                break;
+            case Element.fire:
+                scriptCard.attackText.color = colorBuffText;
+                break;
+            case Element.water:
+                scriptCard.lifeText.color = colorBuffText;
 
+                break;
+            case Element.wind:
+                scriptCard.lifeText.color = colorBuffText;
+                scriptCard.attackText.color = colorBuffText;
+
+                break;
+            default:
+                break;
+        }
         if (element1 == Element.none)
         {
             element1 = ElementAdded;

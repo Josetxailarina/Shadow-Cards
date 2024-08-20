@@ -76,22 +76,23 @@ public class CardScript : MonoBehaviour
         if ((cardStats.element1 == Element.fire && cardStats.element2 == Element.wind)|| (cardStats.element1 == Element.wind && cardStats.element2 == Element.fire))
         {
             StartCoroutine(AttackSides());
+            SoundManager.PlayTornadoAttackEffect(tableScript.oppositeCard.transform.position);
 
         }
         else
         {
-            tableScript.Attack();
+            tableScript.Attack(Direction.Center);
 
         }
     }
     IEnumerator AttackSides()
     {
-        tableScript.AttackLeft();
+        tableScript.Attack(Direction.Left);
         yield return new WaitForSecondsRealtime(0.2f);
-        tableScript.Attack();
+        tableScript.Attack(Direction.Center);
         yield return new WaitForSecondsRealtime(0.2f);
 
-        tableScript.AttackRight();
+        tableScript.Attack(Direction.Right);
     }
     public void ResetSortingOrder()
     {

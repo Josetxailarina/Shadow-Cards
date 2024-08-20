@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class SoundManager : MonoBehaviour
 {
@@ -29,6 +30,8 @@ public class SoundManager : MonoBehaviour
     public static ParticleSystem smokeParticles;
     public static ParticleSystem tornadoParticles;
     public static ParticleSystem iceParticles;
+    public static ParticleSystem tornadoAttackParticles;
+
 
     // Public references for ParticleSystem (to assign in Inspector)
     public ParticleSystem windParticlesRef;
@@ -37,6 +40,7 @@ public class SoundManager : MonoBehaviour
     public ParticleSystem smokeParticlesRef;
     public ParticleSystem tornadoParticlesRef;
     public ParticleSystem iceParticlesRef;
+    public ParticleSystem tornadoAttackParticlesRef;
 
     private void Start()
     {
@@ -56,6 +60,7 @@ public class SoundManager : MonoBehaviour
         smokeParticles = smokeParticlesRef;
         tornadoParticles = tornadoParticlesRef;
         iceParticles = iceParticlesRef;
+        tornadoAttackParticles = tornadoAttackParticlesRef;
     }
 
     // Functions to play sound and particle effects at a specific position
@@ -67,6 +72,15 @@ public class SoundManager : MonoBehaviour
             windParticles.Play();
         }
         windSound?.Play();
+    }
+    public static void PlayTornadoAttackEffect(Vector3 position)
+    {
+        if (tornadoAttackParticles != null)
+        {
+            tornadoAttackParticles.transform.position = new Vector3(position.x,position.y - 1,position.z);
+            tornadoAttackParticles.Play();
+        }
+        tornadoSound?.Play();
     }
 
     public static void PlayFireEffect(Vector3 position)
