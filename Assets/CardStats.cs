@@ -182,7 +182,14 @@ public class CardStats : MonoBehaviour
                     if (ElementAdded == Element.wind)
                     {
                         elementObject.sprite = spritesElements[5];
-                        scriptCard.tableScript.scriptMuro.gameObject.SetActive(true);
+                        if (scriptCard.tableScript.scriptMuro.gameObject.activeSelf)
+                        {
+                            scriptCard.tableScript.scriptMuro.AddLife();
+                        }
+                        else
+                        {
+                            scriptCard.tableScript.scriptMuro.gameObject.SetActive(true);
+                        }                        
                         SoundManager.PlayIceEffect(position);
                         attack += 1;
                         health += 1;
@@ -207,7 +214,14 @@ public class CardStats : MonoBehaviour
                     else if (ElementAdded == Element.water)
                     {
                         elementObject.sprite = spritesElements[5];
-                        scriptCard.tableScript.scriptMuro.gameObject.SetActive(true);
+                        if (scriptCard.tableScript.scriptMuro.gameObject.activeSelf)
+                        {
+                            scriptCard.tableScript.scriptMuro.AddLife();
+                        }
+                        else
+                        {
+                            scriptCard.tableScript.scriptMuro.gameObject.SetActive(true);
+                        }
                         SoundManager.PlayIceEffect(position);
                         health += 2;
                         UpdateStats();

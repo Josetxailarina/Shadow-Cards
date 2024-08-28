@@ -12,6 +12,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerWater Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 2253288938623061081, guid: dc30aaafd4b00f24cbc6bce34691416f, type: 3}
+      propertyPath: cost
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 3354563205899954211, guid: dc30aaafd4b00f24cbc6bce34691416f, type: 3}
       propertyPath: m_LocalPosition.x
       value: -6.13
@@ -50,6 +54,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3354563205899954211, guid: dc30aaafd4b00f24cbc6bce34691416f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3825395097027092135, guid: dc30aaafd4b00f24cbc6bce34691416f, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4161385574759646845, guid: dc30aaafd4b00f24cbc6bce34691416f, type: 3}

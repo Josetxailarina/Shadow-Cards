@@ -13,6 +13,9 @@ public class SoundManager : MonoBehaviour
     public static AudioSource tornadoSound;
     public static AudioSource iceSound;
     public static AudioSource iceBreakSound;
+    public static AudioSource useCardSound;
+    public static AudioSource selectCardSound;
+    public static AudioSource takeCardSound;
 
     // Public references for AudioSource (to assign in Inspector)
     public AudioSource windSoundRef;
@@ -22,6 +25,9 @@ public class SoundManager : MonoBehaviour
     public AudioSource tornadoSoundRef;
     public AudioSource iceSoundRef;
     public AudioSource iceBreakSoundRef;
+    public  AudioSource useCardSoundRef;
+    public  AudioSource selectCardSoundRef;
+    public  AudioSource takeCardSoundRef;
 
     // Static ParticleSystem references
     public static ParticleSystem windParticles;
@@ -52,7 +58,9 @@ public class SoundManager : MonoBehaviour
         tornadoSound = tornadoSoundRef;
         iceSound = iceSoundRef;
         iceBreakSound = iceBreakSoundRef;
-
+        useCardSound = useCardSoundRef;
+        selectCardSound = selectCardSoundRef;
+        takeCardSound = takeCardSoundRef;
         // Assign ParticleSystem references
         windParticles = windParticlesRef;
         fireParticles = fireParticlesRef;

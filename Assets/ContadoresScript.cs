@@ -35,8 +35,8 @@ public class ContadoresScript : MonoBehaviour
         manaAnim = manaRef.GetComponent<Animator>();
         winPanel = winPanelRef;
         losePanel = losePanelRef;
-        life = 20;
-        bossLife = 20;
+        life = 30;
+        bossLife = 30;
         mana = 1;
         manaText.text = mana.ToString();
         lifeText.text = life.ToString();
@@ -61,6 +61,8 @@ public class ContadoresScript : MonoBehaviour
         { 
             losePanel.SetActive(true);
             GameManager.autoMove = true;
+            GameManager.menu = true;
+
         }
     }
     public static void BajarVidaBoss(int Cantidad)
@@ -72,6 +74,7 @@ public class ContadoresScript : MonoBehaviour
         {
             winPanel.SetActive(true);
             GameManager.autoMove = true;
+            GameManager.menu = true;
         }
 
     }

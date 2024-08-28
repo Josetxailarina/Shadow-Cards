@@ -11,9 +11,13 @@ public class ScriptTurn : MonoBehaviour
     public MontonCartasScript mazoScript;
     public static int turn;
     public GameObject panelSeguridad;
+    public GameObject panelSeguridadMana;
+    private Animator animator;
+    public GameObject mano;
 
     private void Start()
     {
+        animator = GetComponent<Animator>();
         passAudio = GetComponent<AudioSource>();
         sprite = GetComponent<SpriteRenderer>();
         turn = 1;
@@ -26,16 +30,32 @@ public class ScriptTurn : MonoBehaviour
             script.DeactivateButton();
         }
     }
-    public void OpenSecurityPanel()
+    public void OpenSecurityPanel(bool mana)
     {
         GameManager.autoMove = true;
-        panelSeguridad.SetActive(true);
+        if (mana)
+        {
+            panelSeguridadMana.SetActive(true);
+
+        }
+        else
+        {
+            panelSeguridad.SetActive(true);
+        }
     }
-    public void CloseSecurityPanel()
+    public void CloseSecurityPanel(bool mana)
     {
         GameManager.autoMove = false;
 
-        panelSeguridad.SetActive(false);
+        if (mana)
+        {
+            panelSeguridadMana.SetActive(false);
+
+        }
+        else
+        {
+            panelSeguridad.SetActive(false);
+        }
     }
     public void NewTurn()
     {
@@ -63,7 +83,7 @@ public class ScriptTurn : MonoBehaviour
     }
     private void OnMouseDown()
     {
-        if (GameManager.autoMove == false)
+        if (GameManager.autoMove == false && !GameManager.menu)
         {
             bool anyAttackButtonActive = false;
 
@@ -78,13 +98,48 @@ public class ScriptTurn : MonoBehaviour
 
             if (anyAttackButtonActive)
             {
-                OpenSecurityPanel();
+                OpenSecurityPanel(false);
+            }
+            else if (CheckManaUsefull())
+            {
+                OpenSecurityPanel(true);
+
             }
             else
             {
                 TerminarTurno();
             }
+            animator.SetBool("On", false);
+
         }
+    }
+    private void OnMouseOver()
+    {
+        if (GameManager.autoMove == false && !GameManager.menu)
+        {
+            animator.SetBool("On", true);
+
+        }
+    }
+    private void OnMouseExit()
+    {
+        if (GameManager.autoMove == false && !GameManager.menu)
+        {
+            animator.SetBool("On", false);
+
+        }
+    }
+    public bool CheckManaUsefull()
+    {
+        CardStats[] cards = mano.GetComponentsInChildren<CardStats>();
+        foreach (CardStats card in cards)
+        {
+            if (card.cost <= ContadoresScript.mana)
+            {
+                return true;
+            }
+        }
+        return false;
     }
     public void TerminarTurno()
     {

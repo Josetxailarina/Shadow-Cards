@@ -62,7 +62,7 @@ public class TableCards : MonoBehaviour
         if (!targetCard.available) // Si hay una carta en frente
         {
             int totalDamage = statsCard.attack;
-            totalDamage += CalculateElementalDamage(targetCard);
+            //totalDamage += CalculateElementalDamage(targetCard);
 
             targetCard.statsCard.TakeDamage(totalDamage);
 
@@ -126,16 +126,10 @@ public class TableCards : MonoBehaviour
         {
             if (collision.CompareTag("Animal"))
             {
-                if (available)
-                {
+                
                     sprite.enabled = true;
                     sprite.color = Color.green;
-                }
-                else
-                {
-                    sprite.enabled = true;
-                    sprite.color = Color.red;
-                }
+              
             }
         }
     }

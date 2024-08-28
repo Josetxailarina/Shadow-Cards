@@ -58,8 +58,7 @@ public class CardScript : MonoBehaviour
             // Establece la posición del GameObject en la posición del ratón en el mundo.
             parentGameobject.transform.position = new Vector3(mouseWorldPosition.x, mouseWorldPosition.y, parentGameobject.transform.position.z);
 
-            Debug.Log("Mouse World Position: " + mouseWorldPosition);
-            Debug.Log("Object Position: " + transform.position);
+           
         }
     }
     public void DeactivateCollider()
@@ -88,9 +87,9 @@ public class CardScript : MonoBehaviour
     IEnumerator AttackSides()
     {
         tableScript.Attack(Direction.Left);
-        yield return new WaitForSecondsRealtime(0.2f);
+        yield return new WaitForSecondsRealtime(0.39f);
         tableScript.Attack(Direction.Center);
-        yield return new WaitForSecondsRealtime(0.2f);
+        yield return new WaitForSecondsRealtime(0.39f);
 
         tableScript.Attack(Direction.Right);
     }
@@ -117,7 +116,7 @@ public class CardScript : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (ContadoresScript.mana >= cardStats.cost)
+        if (ContadoresScript.mana >= cardStats.cost && !GameManager.menu)
         {
 
 
@@ -131,12 +130,12 @@ public class CardScript : MonoBehaviour
                 anim.SetBool("ShowCard", false);
                 transform.parent.eulerAngles = new Vector3(33.55f, 0, 0);
                 transform.localScale = new Vector3(0.35f, 0.35f, 0.35f);
+                SoundManager.takeCardSound.Play();
             }
         }
-        else
+        else if (!GameManager.menu && !GameManager.autoMove)
         {
             ContadoresScript.ManaAnim();
-            print("no mana");
         }
 
 
@@ -144,20 +143,33 @@ public class CardScript : MonoBehaviour
 
     private void OnMouseUp()
     {
-        if (GameManager.movingCard)
+        if (GameManager.movingCard && !GameManager.menu)
         {
 
 
-            if (element == Element.none && tableScript != null && tableScript.available)
+            if (element == Element.none && tableScript != null)
             {
+
+
+                if (!tableScript.available)
+                {
+                    tableScript.statsCard.scriptCard = null;
+
+                    Destroy(tableScript.statsCard.gameObject);
+
+                    tableScript.statsCard = null;
+                }
                 tableScript.available = false;
-                tableScript.ActivateButton();
-                tableScript.statsCard = transform.parent.GetComponent<CardStats>();
-                tableScript.statsCard.scriptCard = this;
-                transform.parent.parent = tableScript.gameObject.transform;
-                StartCoroutine(MoveFromTo(parentGameobject.transform.position, targetPosition, 0.15f));
-                cardCollider.enabled = false;
-                ContadoresScript.BajarMana(cardStats.cost);
+                    tableScript.ActivateButton();
+                    tableScript.statsCard = transform.parent.GetComponent<CardStats>();
+                    tableScript.statsCard.scriptCard = this;
+                    transform.parent.parent = tableScript.gameObject.transform;
+                    StartCoroutine(MoveFromTo(parentGameobject.transform.position, targetPosition, 0.15f));
+                    cardCollider.enabled = false;
+                    ContadoresScript.BajarMana(cardStats.cost);
+                    SoundManager.useCardSound.Play();
+                
+
             }
             else if (element != Element.none && tableScript != null && !tableScript.available && tableScript.statsCard.element2 == Element.none && tableScript.statsCard.element1 != element)
             {
@@ -205,18 +217,20 @@ public class CardScript : MonoBehaviour
 
     public void CardUp()
     {
-        if (!GameManager.movingCard)
+        if (!GameManager.movingCard&&!GameManager.menu)
         {
             anim.SetBool("ShowCard", true);
             actualLayer = renderCard.sortingOrder;
             SortingOrderUp(20);
+            SoundManager.selectCardSound.Play();
+
         }
 
     }
 
     public void CardDown()
     {
-        if (!GameManager.movingCard)
+        if (!GameManager.movingCard && !GameManager.menu)
         {
             anim.SetBool("ShowCard", false);
             SortingOrderUp(actualLayer);
