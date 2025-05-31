@@ -1,50 +1,46 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
+[System.Serializable]
+public class DeckEntry
+{
+    public GameObject cardPrefab;
+    public int cardCount;
+}
 public class MontonCartasScript : MonoBehaviour
 {
-    public ManoScript manoScript;
-    public GameObject rat;
-    public GameObject cat;
-    public GameObject dog;
-    public GameObject horse;
-    public GameObject elephant;
-    public GameObject dragon;
-    public GameObject whale;
-    public GameObject effigy;
-    public GameObject fire;
-    public GameObject wind;
-    public GameObject water;
-
-    public AudioSource cardSound;
+    [SerializeField] private ManoScript manoScript;
+    [SerializeField] private List<DeckEntry> initialDeck = new List<DeckEntry>();
 
     private Dictionary<GameObject, int> deck = new Dictionary<GameObject, int>();
+    private AudioSource cardSound;
 
-   
     private void Start()
     {
-        // Initialize the deck
-        deck[rat] = 3;
-        deck[cat] = 3;
-        deck[dog] = 3;
-        deck[horse] = 3;
-        deck[elephant] = 3;
-        deck[dragon] = 1;
-        deck[whale] = 1;
-        deck[effigy] = 1;
-        deck[fire] = 3;
-        deck[wind] = 3;
-        deck[water] = 3;
+        cardSound = GetComponent<AudioSource>();
+        SetInitialDeck();
         StartCoroutine(SacarIniciales());
+
+    }
+
+    private void SetInitialDeck()
+    {
+        deck.Clear();
+        foreach (var entry in initialDeck)
+        {
+            if (entry.cardPrefab != null && entry.cardCount > 0)
+            {
+                deck[entry.cardPrefab] = entry.cardCount;
+            }
+        }
     }
 
     IEnumerator SacarIniciales()
     {
         GameManager.autoMove = true;
         yield return new WaitForSecondsRealtime(0.5f);
-        SacarCarta(rat);
+        SacarCarta(initialDeck[0].cardPrefab);
         yield return new WaitForSecondsRealtime(0.3f);
         SacarCartaRandom();
         yield return new WaitForSecondsRealtime(0.3f);

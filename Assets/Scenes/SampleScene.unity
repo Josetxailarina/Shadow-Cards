@@ -4874,18 +4874,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   manoScript: {fileID: 1213249661}
-  rat: {fileID: 1267791108907225565, guid: dc30aaafd4b00f24cbc6bce34691416f, type: 3}
-  cat: {fileID: 2823667041531413454, guid: 05249ffc4ea99c84da9b28b0d4793807, type: 3}
-  dog: {fileID: 9065857719253814881, guid: 3eb2826d332b1f8419ae86076b5616a9, type: 3}
-  horse: {fileID: 4518586123311604065, guid: bf8ae3c8637807048a90ca6c65abb869, type: 3}
-  elephant: {fileID: 5573862791262321921, guid: 11479a6dde19a3a44a1086591a675e70, type: 3}
-  dragon: {fileID: 664111325440820754, guid: d4c54daaf3186364b903d0e51d53d512, type: 3}
-  whale: {fileID: 2875842152162148960, guid: ee56a04e83163454da7242c2c39aceb2, type: 3}
-  effigy: {fileID: 8618664298181458460, guid: ab28085958707b04e98b81d2b392f4ed, type: 3}
-  fire: {fileID: 8058790560443634909, guid: b11f1eefc64d2c8489994a5e95a62351, type: 3}
-  wind: {fileID: 1811202690549609660, guid: 4d00246c99c43c444b03ef573869e408, type: 3}
-  water: {fileID: 6894453428894078134, guid: 7e3d0a9abcaa20d429251846836d6052, type: 3}
-  cardSound: {fileID: 1155664598}
+  initialDeck:
+  - cardPrefab: {fileID: 1267791108907225565, guid: dc30aaafd4b00f24cbc6bce34691416f, type: 3}
+    cardCount: 3
+  - cardPrefab: {fileID: 2823667041531413454, guid: 05249ffc4ea99c84da9b28b0d4793807, type: 3}
+    cardCount: 3
+  - cardPrefab: {fileID: 9065857719253814881, guid: 3eb2826d332b1f8419ae86076b5616a9, type: 3}
+    cardCount: 3
+  - cardPrefab: {fileID: 4518586123311604065, guid: bf8ae3c8637807048a90ca6c65abb869, type: 3}
+    cardCount: 3
+  - cardPrefab: {fileID: 5573862791262321921, guid: 11479a6dde19a3a44a1086591a675e70, type: 3}
+    cardCount: 3
+  - cardPrefab: {fileID: 664111325440820754, guid: d4c54daaf3186364b903d0e51d53d512, type: 3}
+    cardCount: 1
+  - cardPrefab: {fileID: 2875842152162148960, guid: ee56a04e83163454da7242c2c39aceb2, type: 3}
+    cardCount: 1
+  - cardPrefab: {fileID: 8618664298181458460, guid: ab28085958707b04e98b81d2b392f4ed, type: 3}
+    cardCount: 1
+  - cardPrefab: {fileID: 8058790560443634909, guid: b11f1eefc64d2c8489994a5e95a62351, type: 3}
+    cardCount: 3
+  - cardPrefab: {fileID: 1811202690549609660, guid: 4d00246c99c43c444b03ef573869e408, type: 3}
+    cardCount: 3
+  - cardPrefab: {fileID: 6894453428894078134, guid: 7e3d0a9abcaa20d429251846836d6052, type: 3}
+    cardCount: 3
 --- !u!61 &1155664597
 BoxCollider2D:
   m_ObjectHideFlags: 0
