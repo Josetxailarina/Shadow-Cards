@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -126,10 +124,8 @@ public class TableCards : MonoBehaviour
         {
             if (collision.CompareTag("Animal"))
             {
-                
-                    sprite.enabled = true;
-                    sprite.color = Color.green;
-              
+                 sprite.enabled = true;
+                 sprite.color = Color.green;
             }
         }
     }

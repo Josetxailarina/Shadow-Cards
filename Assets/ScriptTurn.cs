@@ -7,8 +7,8 @@ public class ScriptTurn : MonoBehaviour
     public EnemyScript enemyScript;
     private AudioSource passAudio;
     private SpriteRenderer sprite;
-    public TableCards[] tableScript;
-    public MontonCartasScript mazoScript;
+    public TableCards[] playerTableCards;
+    public PlayerDeck mazoScript;
     public static int turn;
     public GameObject panelSeguridad;
     public GameObject panelSeguridadMana;
@@ -22,32 +22,58 @@ public class ScriptTurn : MonoBehaviour
         sprite = GetComponent<SpriteRenderer>();
         turn = 1;
     }
-    public void EndTurn()
+
+    private void OnMouseDown()
     {
-        sprite.color = new Color(0.25f, 0.25f, 0.25f,1);
-        foreach (TableCards script in tableScript)
+        if (GameManager.gameState == GameState.Play)
         {
-            script.DeactivateButton();
+            if (AnyAttackAvailable())
+            {
+                OpenWarningPanel(false);
+            }
+            else if (CheckManaUsefull())
+            {
+                OpenWarningPanel(true);
+            }
+            else
+            {
+                EndTurn();
+            }
+            animator.SetBool("On", false);
+
         }
     }
-    public void OpenSecurityPanel(bool mana)
+    private void OnMouseOver()
     {
-        GameManager.autoMove = true;
-        if (mana)
+        if (GameManager.gameState == GameState.Play)
+        {
+            animator.SetBool("On", true);
+        }
+    }
+    private void OnMouseExit()
+    {
+        if (GameManager.gameState == GameState.Play)
+        {
+            animator.SetBool("On", false);
+        }
+    }
+    public void OpenWarningPanel(bool useManaPanel)
+    {
+        GameManager.gameState = GameState.AutoMove;
+        if (useManaPanel)
         {
             panelSeguridadMana.SetActive(true);
-
         }
         else
         {
             panelSeguridad.SetActive(true);
         }
     }
-    public void CloseSecurityPanel(bool mana)
+    public void CloseSecurityPanel(bool useManaPanel)
     {
-        GameManager.autoMove = false;
+        GameManager.gameState = GameState.Play;
 
-        if (mana)
+        if (useManaPanel)
         {
             panelSeguridadMana.SetActive(false);
 
@@ -72,8 +98,8 @@ public class ScriptTurn : MonoBehaviour
         }
         ContadoresScript.UpdateStats();
         sprite.color = new Color(1f, 1f, 1f, 1);
-        mazoScript.Sacar2Random();
-        foreach (TableCards script in tableScript)
+        StartCoroutine(mazoScript.DrawSomeCards(2));
+        foreach (TableCards script in playerTableCards)
         {
             if (!script.available)
             {
@@ -81,54 +107,22 @@ public class ScriptTurn : MonoBehaviour
             }
         }
     }
-    private void OnMouseDown()
+    
+
+    private bool AnyAttackAvailable()
     {
-        if (GameManager.autoMove == false && !GameManager.menu)
+        foreach (var script in playerTableCards)
         {
-            bool anyAttackButtonActive = false;
-
-            foreach (var script in tableScript)
+            if (script.attackButton.gameObject.activeSelf)
             {
-                if (script.attackButton.gameObject.activeSelf)
-                {
-                    anyAttackButtonActive = true;
-                    break;
-                }
+                return true;
             }
-
-            if (anyAttackButtonActive)
-            {
-                OpenSecurityPanel(false);
-            }
-            else if (CheckManaUsefull())
-            {
-                OpenSecurityPanel(true);
-
-            }
-            else
-            {
-                TerminarTurno();
-            }
-            animator.SetBool("On", false);
-
         }
-    }
-    private void OnMouseOver()
-    {
-        if (GameManager.autoMove == false && !GameManager.menu)
-        {
-            animator.SetBool("On", true);
 
-        }
+        return false;
     }
-    private void OnMouseExit()
-    {
-        if (GameManager.autoMove == false && !GameManager.menu)
-        {
-            animator.SetBool("On", false);
 
-        }
-    }
+   
     public bool CheckManaUsefull()
     {
         CardStats[] cards = mano.GetComponentsInChildren<CardStats>();
@@ -141,10 +135,14 @@ public class ScriptTurn : MonoBehaviour
         }
         return false;
     }
-    public void TerminarTurno()
+    public void EndTurn()
     {
-        EndTurn();
-        GameManager.autoMove = true;
+        sprite.color = new Color(0.25f, 0.25f, 0.25f, 1);
+        foreach (TableCards script in playerTableCards)
+        {
+            script.DeactivateButton();
+        }
+        GameManager.gameState = GameState.AutoMove;
         passAudio.Play();
         enemyScript.Turn1();
     }

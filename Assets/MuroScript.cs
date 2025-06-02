@@ -44,7 +44,7 @@ public class MuroScript : MonoBehaviour
             { 
             scripts.protection = false;
             }
-            SoundManager.iceBreakSound.Play();
+            SoundManager.instance.iceBreakSound.Play();
             gameObject.SetActive(false);
         }
     }

@@ -32,7 +32,7 @@ public class EnemyScript : MonoBehaviour
     }
     public void Turn1()
     {
-        GameManager.autoMove = true;
+        GameManager.gameState = GameState.AutoMove;
         switch (ScriptTurn.turn)
         {
             case 1:
@@ -96,7 +96,7 @@ public class EnemyScript : MonoBehaviour
             yield return new WaitForSecondsRealtime(0.8f);
         }
         turnScript.NewTurn();
-        GameManager.autoMove = false;
+        GameManager.gameState = GameState.Play;
     }
     public void EnemyAttack(TableCards Table)
     {
@@ -353,12 +353,12 @@ public class EnemyScript : MonoBehaviour
         else if (reemplazar)
         {
             Destroy(cartaReemplazable);
-            SoundManager.useCardSound.Play();
+            SoundManager.instance.useCardSound.Play();
 
         }
         else
         {
-            SoundManager.useCardSound.Play();
+            SoundManager.instance.useCardSound.Play();
 
         }
     }

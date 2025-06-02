@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -19,12 +18,12 @@ public class CardScript : MonoBehaviour
     private Vector2 colliderSize;
     private Camera mainCamera;
     private GameObject parentGameobject;
-    private ManoScript scriptMano;
+    private PlayerHandLayout playerHandLayout;
     private Vector3 targetPosition;
     public TableCards tableScript;
     private CardStats cardStats;
     public Element element = Element.none;
-    
+
 
     private void Awake()
     {
@@ -41,7 +40,7 @@ public class CardScript : MonoBehaviour
     {
         mainCamera = Camera.main;
         parentGameobject = transform.parent.gameObject;
-        scriptMano = FindObjectOfType<ManoScript>();
+        playerHandLayout = FindObjectOfType<PlayerHandLayout>();
         cardStats = GetComponentInParent<CardStats>();
     }
 
@@ -58,7 +57,7 @@ public class CardScript : MonoBehaviour
             // Establece la posición del GameObject en la posición del ratón en el mundo.
             parentGameobject.transform.position = new Vector3(mouseWorldPosition.x, mouseWorldPosition.y, parentGameobject.transform.position.z);
 
-           
+
         }
     }
     public void DeactivateCollider()
@@ -72,10 +71,10 @@ public class CardScript : MonoBehaviour
     }
     public void Attack()
     {
-        if ((cardStats.element1 == Element.fire && cardStats.element2 == Element.wind)|| (cardStats.element1 == Element.wind && cardStats.element2 == Element.fire))
+        if ((cardStats.element1 == Element.fire && cardStats.element2 == Element.wind) || (cardStats.element1 == Element.wind && cardStats.element2 == Element.fire))
         {
             StartCoroutine(AttackSides());
-            SoundManager.PlayTornadoAttackEffect(tableScript.oppositeCard.transform.position);
+            FXManager.Instance.PlayEffect(ParticleType.TornadoAttack,tableScript.oppositeCard.transform.position);
 
         }
         else
@@ -116,12 +115,11 @@ public class CardScript : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (ContadoresScript.mana >= cardStats.cost && !GameManager.menu)
+        if (GameManager.gameState == GameState.Play)
         {
-
-
-            if (!GameManager.autoMove)
+            if (ContadoresScript.mana >= cardStats.cost)
             {
+
                 SortingOrderUp(20);
                 dragging = true;
                 GameManager.movingCard = true;
@@ -130,12 +128,12 @@ public class CardScript : MonoBehaviour
                 anim.SetBool("ShowCard", false);
                 transform.parent.eulerAngles = new Vector3(33.55f, 0, 0);
                 transform.localScale = new Vector3(0.35f, 0.35f, 0.35f);
-                SoundManager.takeCardSound.Play();
+                SoundManager.instance.takeCardSound.Play();
             }
-        }
-        else if (!GameManager.menu && !GameManager.autoMove)
-        {
-            ContadoresScript.ManaAnim();
+            else
+            {
+                ContadoresScript.ManaAnim();
+            }
         }
 
 
@@ -143,14 +141,10 @@ public class CardScript : MonoBehaviour
 
     private void OnMouseUp()
     {
-        if (GameManager.movingCard && !GameManager.menu)
+        if (GameManager.movingCard)
         {
-
-
             if (element == Element.none && tableScript != null)
             {
-
-
                 if (!tableScript.available)
                 {
                     tableScript.statsCard.scriptCard = null;
@@ -160,15 +154,15 @@ public class CardScript : MonoBehaviour
                     tableScript.statsCard = null;
                 }
                 tableScript.available = false;
-                    tableScript.ActivateButton();
-                    tableScript.statsCard = transform.parent.GetComponent<CardStats>();
-                    tableScript.statsCard.scriptCard = this;
-                    transform.parent.parent = tableScript.gameObject.transform;
-                    StartCoroutine(MoveFromTo(parentGameobject.transform.position, targetPosition, 0.15f));
-                    cardCollider.enabled = false;
-                    ContadoresScript.BajarMana(cardStats.cost);
-                    SoundManager.useCardSound.Play();
-                
+                tableScript.ActivateButton();
+                tableScript.statsCard = transform.parent.GetComponent<CardStats>();
+                tableScript.statsCard.scriptCard = this;
+                transform.parent.parent = tableScript.gameObject.transform;
+                StartCoroutine(MoveFromTo(parentGameobject.transform.position, targetPosition, 0.15f));
+                cardCollider.enabled = false;
+                ContadoresScript.BajarMana(cardStats.cost);
+                SoundManager.instance.useCardSound.Play();
+
 
             }
             else if (element != Element.none && tableScript != null && !tableScript.available && tableScript.statsCard.element2 == Element.none && tableScript.statsCard.element1 != element)
@@ -190,7 +184,7 @@ public class CardScript : MonoBehaviour
             ResetSortingOrder();
             dragging = false;
             GameManager.movingCard = false;
-            scriptMano.ActualizarMano();
+            playerHandLayout.UpdateHand();
         }
     }
     private void OnTriggerEnter2D(Collider2D collision)
@@ -217,12 +211,12 @@ public class CardScript : MonoBehaviour
 
     public void CardUp()
     {
-        if (!GameManager.movingCard&&!GameManager.menu)
+        if (!GameManager.movingCard && GameManager.gameState == GameState.Play)
         {
             anim.SetBool("ShowCard", true);
             actualLayer = renderCard.sortingOrder;
             SortingOrderUp(20);
-            SoundManager.selectCardSound.Play();
+            SoundManager.instance.selectCardSound.Play();
 
         }
 
@@ -230,7 +224,7 @@ public class CardScript : MonoBehaviour
 
     public void CardDown()
     {
-        if (!GameManager.movingCard && !GameManager.menu)
+        if (!GameManager.movingCard && GameManager.gameState == GameState.Play)
         {
             anim.SetBool("ShowCard", false);
             SortingOrderUp(actualLayer);

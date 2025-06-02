@@ -60,8 +60,7 @@ public class ContadoresScript : MonoBehaviour
         if (life <= 0) 
         { 
             losePanel.SetActive(true);
-            GameManager.autoMove = true;
-            GameManager.menu = true;
+            GameManager.gameState = GameState.Menu;
 
         }
     }
@@ -73,8 +72,7 @@ public class ContadoresScript : MonoBehaviour
         if (bossLife <= 0) 
         {
             winPanel.SetActive(true);
-            GameManager.autoMove = true;
-            GameManager.menu = true;
+            GameManager.gameState = GameState.Menu;
         }
 
     }

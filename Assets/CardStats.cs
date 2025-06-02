@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public enum Element
@@ -130,14 +128,14 @@ public class CardStats : MonoBehaviour
             if (ElementAdded == Element.fire)
             {
                 elementObject.sprite = spritesElements[0];
-                SoundManager.PlayFireEffect(position);
+                FXManager.Instance.PlayEffect(ParticleType.Fire,position);
                 attack += 2;
                 UpdateStats();
             }
             else if (ElementAdded == Element.wind)
             {
                 elementObject.sprite = spritesElements[1];
-                SoundManager.PlayWindEffect(position);
+                FXManager.Instance.PlayEffect(ParticleType.Wind, position);
                 attack += 1;
                 health += 1;
                 UpdateStats();
@@ -146,7 +144,7 @@ public class CardStats : MonoBehaviour
             else if (ElementAdded == Element.water)
             {
                 elementObject.sprite = spritesElements[2];
-                SoundManager.PlayWaterEffect(position);
+                FXManager.Instance.PlayEffect(ParticleType.Water, position);
                 health += 2;
                 UpdateStats();
 
@@ -164,7 +162,7 @@ public class CardStats : MonoBehaviour
                     if (ElementAdded == Element.wind)
                     {
                         elementObject.sprite = spritesElements[3];
-                        SoundManager.PlayTornadoEffect(position);
+                        FXManager.Instance.PlayEffect(ParticleType.Tornado, position);
                         attack += 1;
                         health += 1;
                         UpdateStats();
@@ -173,7 +171,7 @@ public class CardStats : MonoBehaviour
                     else if (ElementAdded == Element.water)
                     {
                         elementObject.sprite = spritesElements[4];
-                        SoundManager.PlaySmokeEffect(position);
+                        FXManager.Instance.PlayEffect(ParticleType.Smoke, position);
                         health += 2;
                         UpdateStats();
                     }
@@ -190,7 +188,7 @@ public class CardStats : MonoBehaviour
                         {
                             scriptCard.tableScript.scriptMuro.gameObject.SetActive(true);
                         }                        
-                        SoundManager.PlayIceEffect(position);
+                        FXManager.Instance.PlayEffect(ParticleType.Ice, position);
                         attack += 1;
                         health += 1;
                         UpdateStats();
@@ -198,7 +196,7 @@ public class CardStats : MonoBehaviour
                     else if (ElementAdded == Element.fire)
                     {
                         elementObject.sprite = spritesElements[4];
-                        SoundManager.PlaySmokeEffect(position);
+                        FXManager.Instance.PlayEffect(ParticleType.Smoke, position);
                         attack += 2;
                         UpdateStats();
                     }
@@ -207,7 +205,7 @@ public class CardStats : MonoBehaviour
                     if (ElementAdded == Element.fire)
                     {
                         elementObject.sprite = spritesElements[3];
-                        SoundManager.PlayTornadoEffect(position);
+                        FXManager.Instance.PlayEffect(ParticleType.Tornado, position);
                         attack += 2;
                         UpdateStats();
                     }
@@ -222,7 +220,7 @@ public class CardStats : MonoBehaviour
                         {
                             scriptCard.tableScript.scriptMuro.gameObject.SetActive(true);
                         }
-                        SoundManager.PlayIceEffect(position);
+                        FXManager.Instance.PlayEffect(ParticleType.Ice, position);
                         health += 2;
                         UpdateStats();
                     }
