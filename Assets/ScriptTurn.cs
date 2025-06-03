@@ -128,7 +128,7 @@ public class ScriptTurn : MonoBehaviour
         CardStats[] cards = mano.GetComponentsInChildren<CardStats>();
         foreach (CardStats card in cards)
         {
-            if (card.cost <= ContadoresScript.mana)
+            if (card.cardData.cost <= ContadoresScript.mana)
             {
                 return true;
             }

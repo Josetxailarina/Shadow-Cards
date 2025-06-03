@@ -20,6 +20,10 @@ PrefabInstance:
       propertyPath: cost
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 2253288938623061081, guid: dc30aaafd4b00f24cbc6bce34691416f, type: 3}
+      propertyPath: cardData
+      value: 
+      objectReference: {fileID: 11400000, guid: 8591cef839ef35340a29d23a41c87ff3, type: 2}
     - target: {fileID: 3354563205899954211, guid: dc30aaafd4b00f24cbc6bce34691416f, type: 3}
       propertyPath: m_LocalPosition.x
       value: -6.13

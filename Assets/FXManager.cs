@@ -31,41 +31,41 @@ public class FXManager : MonoBehaviour
 
     
 
-    public void PlayEffect(ParticleType type, Vector3 position)
+    public void PlayEffect(ElementType type, Vector3 position)
     {
         switch (type)
         {
-            case ParticleType.Wind:
+            case ElementType.Wind:
                 windParticles.transform.position = position;
                 windParticles?.Play();
                 windSound?.Play();
                 break;
-            case ParticleType.Fire:
+            case ElementType.Fire:
                 fireParticles.transform.position = position;
                 fireParticles?.Play();
                 fireSound?.Play();
                 break;
-            case ParticleType.Water:
+            case ElementType.Water:
                 waterParticles.transform.position = position;
                 waterParticles?.Play();
                 waterSound?.Play();
                 break;
-            case ParticleType.Smoke:
+            case ElementType.Smoke:
                 smokeParticles.transform.position = position;
                 smokeParticles?.Play();
                 smokeSound?.Play();
                 break;
-            case ParticleType.Tornado:
+            case ElementType.Tornado:
                 tornadoParticles.transform.position = position;
                 tornadoParticles?.Play();
                 tornadoSound?.Play();
                 break;
-            case ParticleType.Ice:
+            case ElementType.Ice:
                 iceParticles.transform.position = position;
                 iceParticles?.Play();
                 iceSound?.Play();
                 break;
-            case ParticleType.TornadoAttack:
+            case ElementType.TornadoAttack:
                 tornadoAttackParticles.transform.position = transform.position = new Vector3(position.x, position.y - 1, position.z);
                 tornadoAttackParticles?.Play();
                 tornadoSound?.Play();
@@ -75,8 +75,9 @@ public class FXManager : MonoBehaviour
 }
 
 
-public enum ParticleType
+public enum ElementType
 {
+    None,
     Wind,
     Fire,
     Water,

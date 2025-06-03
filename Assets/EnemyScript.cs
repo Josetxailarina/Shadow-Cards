@@ -100,7 +100,7 @@ public class EnemyScript : MonoBehaviour
     }
     public void EnemyAttack(TableCards Table)
     {
-        if ((Table.statsCard.element1 == Element.fire && Table.statsCard.element2 == Element.water) || (Table.statsCard.element1 == Element.water && Table.statsCard.element2 == Element.fire))
+        if (Table.statsCard.currentElement == ElementType.Smoke)
         {
             Table.statsCard.scriptCard.anim.SetTrigger("EnemyDoble");
         }
@@ -280,12 +280,13 @@ public class EnemyScript : MonoBehaviour
     {
         // Instancia el prefab en la posición del objeto que tiene el script con rotación identitaria
         GameObject instance = Instantiate(Card, transform.position, Quaternion.identity);
+        CardStats cardStats = instance.GetComponent<CardStats>();
 
         // Configura el padre del prefab instanciado
         instance.transform.SetParent(table.gameObject.transform, true);
         instance.transform.localEulerAngles = Vector3.zero;
 
-        bool isElementalCard = (Card == fire || Card == wind || Card == water);
+        bool isElementalCard = cardStats.cardData.isElementalCard;
         bool reemplazar = !table.available && !isElementalCard;
         GameObject cartaReemplazable = null;
 
@@ -333,21 +334,7 @@ public class EnemyScript : MonoBehaviour
 
         if (isElementalCard)
         {
-            // Añadir el elemento correspondiente a la carta en la mesa
-            if (Card == fire)
-            {
-                table.statsCard?.AddElement(Element.fire);
-            }
-            else if (Card == wind)
-            {
-                table.statsCard?.AddElement(Element.wind);
-            }
-            else if (Card == water)
-            {
-                table.statsCard?.AddElement(Element.water);
-            }
-
-            // Destruir la carta elemental instanciada
+            table.statsCard?.AddElement(cardStats);
             Destroy(instance);
         }
         else if (reemplazar)

@@ -21,6 +21,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2253288938623061081, guid: dc30aaafd4b00f24cbc6bce34691416f, type: 3}
+      propertyPath: cardData
+      value: 
+      objectReference: {fileID: 11400000, guid: a76b0f34e97ff0a459df9c7000604c13, type: 2}
+    - target: {fileID: 2253288938623061081, guid: dc30aaafd4b00f24cbc6bce34691416f, type: 3}
       propertyPath: scriptCard
       value: 
       objectReference: {fileID: 4963647613569403882}

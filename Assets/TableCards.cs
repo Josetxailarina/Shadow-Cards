@@ -32,7 +32,7 @@ public class TableCards : MonoBehaviour
 
         if (targetCard.protection)
         {
-            targetCard.scriptMuro.TakeDamage(statsCard.attack);
+            targetCard.scriptMuro.TakeDamage(statsCard.currentAttack);
         }
         else
         {
@@ -59,7 +59,7 @@ public class TableCards : MonoBehaviour
     {
         if (!targetCard.available) // Si hay una carta en frente
         {
-            int totalDamage = statsCard.attack;
+            int totalDamage = statsCard.currentAttack;
             //totalDamage += CalculateElementalDamage(targetCard);
 
             targetCard.statsCard.TakeDamage(totalDamage);
@@ -69,46 +69,14 @@ public class TableCards : MonoBehaviour
         }
         else if (!enemyBoard)
         {
-            ContadoresScript.BajarVidaBoss(statsCard.attack);
-            ShowDamage(targetCard.transform.position, statsCard.attack);
+            ContadoresScript.BajarVidaBoss(statsCard.currentAttack);
+            ShowDamage(targetCard.transform.position, statsCard.currentAttack);
         }
         else
         {
-            ContadoresScript.BajarVida(statsCard.attack);
-            ShowDamage(targetCard.transform.position, statsCard.attack);
+            ContadoresScript.BajarVida(statsCard.currentAttack);
+            ShowDamage(targetCard.transform.position, statsCard.currentAttack);
         }
-    }
-
-    private int CalculateElementalDamage(TableCards targetCard)
-    {
-        int elementalBonus = 0;
-
-        elementalBonus += GetElementalBonus(statsCard.element1, targetCard);
-        elementalBonus += GetElementalBonus(statsCard.element2, targetCard);
-
-        return elementalBonus;
-    }
-
-    private int GetElementalBonus(Element element, TableCards targetCard)
-    {
-        switch (element)
-        {
-            case Element.fire:
-                if (IsAffectedByElement(targetCard, Element.wind))  return 2;
-                break;
-            case Element.water:
-                if (IsAffectedByElement(targetCard, Element.fire)) return 2;
-                break;
-            case Element.wind:
-                if (IsAffectedByElement(targetCard, Element.water)) return 2;
-                break;
-        }
-        return 0;
-    }
-
-    private bool IsAffectedByElement(TableCards targetCard, Element element)
-    {
-        return targetCard.statsCard?.element1 == element || targetCard.statsCard?.element2 == element;
     }
 
     private void ShowDamage(Vector3 position, int totalDamage)

@@ -45,13 +45,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1108788572d394f448a6dd5b24171fbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  element1: 0
-  element2: 0
-  health: 1
-  attack: 1
-  cost: 1
+  cardData: {fileID: 11400000, guid: dab85c6b06289f54691c45f352da5dc4, type: 2}
+  currentElement: 0
+  currentHealth: 0
+  currentAttack: 0
   scriptCard: {fileID: 8238733303270611449}
-  elementObject: {fileID: 1031725584169445162}
+  elementSpriteRenderer: {fileID: 1031725584169445162}
   spritesElements:
   - {fileID: 21300000, guid: 1513b2b4ecaa9074c9f630c36eb17acb, type: 3}
   - {fileID: 21300000, guid: 6da65383eaf5df444b4abbb3631acf0c, type: 3}
@@ -355,12 +354,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   anim: {fileID: 0}
-  renderCard: {fileID: 6189975360301291812}
-  renderElement: {fileID: 1031725584169445162}
+  elementSpriteRenderer: {fileID: 1031725584169445162}
   lifeText: {fileID: 3234600836084300301}
   attackText: {fileID: 8264330902610815654}
   tableScript: {fileID: 0}
-  element: 0
 --- !u!61 &7999774976899680676
 BoxCollider2D:
   m_ObjectHideFlags: 0

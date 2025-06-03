@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class CardScript : MonoBehaviour
 {
-    public Animator anim;
+    [HideInInspector] public Animator anim;
     private int actualLayer;
-    public SpriteRenderer renderCard;
-    public SpriteRenderer renderElement;
+    private SpriteRenderer cardSpriteRenderer;
+    public SpriteRenderer elementSpriteRenderer;
     public TextMeshPro lifeText;
     public TextMeshPro attackText;
 
@@ -22,11 +22,11 @@ public class CardScript : MonoBehaviour
     private Vector3 targetPosition;
     public TableCards tableScript;
     private CardStats cardStats;
-    public Element element = Element.none;
 
 
     private void Awake()
     {
+        cardSpriteRenderer = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
         cardCollider = GetComponent<BoxCollider2D>();
         if (cardCollider != null)
@@ -71,16 +71,14 @@ public class CardScript : MonoBehaviour
     }
     public void Attack()
     {
-        if ((cardStats.element1 == Element.fire && cardStats.element2 == Element.wind) || (cardStats.element1 == Element.wind && cardStats.element2 == Element.fire))
+        if (cardStats.currentElement == ElementType.Tornado)
         {
             StartCoroutine(AttackSides());
-            FXManager.Instance.PlayEffect(ParticleType.TornadoAttack,tableScript.oppositeCard.transform.position);
-
+            FXManager.Instance.PlayEffect(ElementType.TornadoAttack,tableScript.oppositeCard.transform.position);
         }
         else
         {
             tableScript.Attack(Direction.Center);
-
         }
     }
     IEnumerator AttackSides()
@@ -94,16 +92,16 @@ public class CardScript : MonoBehaviour
     }
     public void ResetSortingOrder()
     {
-        renderCard.sortingOrder = 1;
-        renderElement.sortingOrder = renderCard.sortingOrder + 1;
-        lifeText.sortingOrder = renderCard.sortingOrder + 1;
-        attackText.sortingOrder = renderCard.sortingOrder + 1;
+        cardSpriteRenderer.sortingOrder = 1;
+        elementSpriteRenderer.sortingOrder = cardSpriteRenderer.sortingOrder + 1;
+        lifeText.sortingOrder = cardSpriteRenderer.sortingOrder + 1;
+        attackText.sortingOrder = cardSpriteRenderer.sortingOrder + 1;
 
     }
     public void SortingOrderUp(int Order)
     {
-        renderCard.sortingOrder = Order;
-        renderElement.sortingOrder = Order + 1;
+        cardSpriteRenderer.sortingOrder = Order;
+        elementSpriteRenderer.sortingOrder = Order + 1;
         lifeText.sortingOrder = Order + 1;
         attackText.sortingOrder = Order + 1;
 
@@ -117,7 +115,7 @@ public class CardScript : MonoBehaviour
     {
         if (GameManager.gameState == GameState.Play)
         {
-            if (ContadoresScript.mana >= cardStats.cost)
+            if (ContadoresScript.mana >= cardStats.cardData.cost)
             {
 
                 SortingOrderUp(20);
@@ -143,7 +141,7 @@ public class CardScript : MonoBehaviour
     {
         if (GameManager.movingCard)
         {
-            if (element == Element.none && tableScript != null)
+            if (!cardStats.cardData.isElementalCard && tableScript != null)
             {
                 if (!tableScript.available)
                 {
@@ -160,15 +158,15 @@ public class CardScript : MonoBehaviour
                 transform.parent.parent = tableScript.gameObject.transform;
                 StartCoroutine(MoveFromTo(parentGameobject.transform.position, targetPosition, 0.15f));
                 cardCollider.enabled = false;
-                ContadoresScript.BajarMana(cardStats.cost);
+                ContadoresScript.BajarMana(cardStats.cardData.cost);
                 SoundManager.instance.useCardSound.Play();
 
 
             }
-            else if (element != Element.none && tableScript != null && !tableScript.available && tableScript.statsCard.element2 == Element.none && tableScript.statsCard.element1 != element)
+            else if (cardStats.cardData.isElementalCard && tableScript != null && !tableScript.available && tableScript.statsCard.CanAddElement(cardStats.cardData.element))
             {
-                tableScript.statsCard.AddElement(element);
-                ContadoresScript.BajarMana(cardStats.cost);
+                tableScript.statsCard.AddElement(cardStats);
+                ContadoresScript.BajarMana(cardStats.cardData.cost);
                 Destroy(transform.parent.gameObject);
                 //efectos elementales
             }
@@ -191,13 +189,15 @@ public class CardScript : MonoBehaviour
     {
         targetPosition = collision.transform.position;
         tableScript = collision.GetComponent<TableCards>();
-        if (element != Element.none && tableScript != null && !tableScript.available && tableScript.statsCard.element2 == Element.none && tableScript.statsCard.element1 != element)
+        if (cardStats.cardData.isElementalCard && tableScript != null && !tableScript.available && tableScript.statsCard.CanAddElement(cardStats.cardData.element))
         {
             tableScript.GoGreen();
+            print("go green");
         }
         else
         {
             tableScript.GoRed();
+            print("go red");
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
@@ -214,7 +214,7 @@ public class CardScript : MonoBehaviour
         if (!GameManager.movingCard && GameManager.gameState == GameState.Play)
         {
             anim.SetBool("ShowCard", true);
-            actualLayer = renderCard.sortingOrder;
+            actualLayer = cardSpriteRenderer.sortingOrder;
             SortingOrderUp(20);
             SoundManager.instance.selectCardSound.Play();
 

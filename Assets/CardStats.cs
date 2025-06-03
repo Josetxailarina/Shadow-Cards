@@ -1,28 +1,23 @@
 using UnityEngine;
 
-public enum Element
-{
-    none,
-    fire,
-    water,
-    wind,
-}
-
 public class CardStats : MonoBehaviour
 {
-    public Element element1;
-    public Element element2;
-    public int health;
-    public int attack;
-    public int cost;
+    [SerializeField] public CardData cardData; // <--- ScriptableObject with card data
+    
+    [HideInInspector] public ElementType currentElement;
+    [HideInInspector] public int currentHealth;
+    [HideInInspector] public int currentAttack;
     public CardScript scriptCard;
-    public SpriteRenderer elementObject;
+    public SpriteRenderer elementSpriteRenderer;
     public Sprite[] spritesElements;
     public Color colorBuffText;
 
     private void Awake()
     {
         scriptCard = GetComponentInChildren<CardScript>();
+        currentAttack = cardData.attack;
+        currentHealth = cardData.health;
+        currentElement = cardData.element;
     }
 
     private void Start()
@@ -32,17 +27,17 @@ public class CardStats : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        health -= damage;
+        currentHealth -= damage;
         UpdateStats();
-        if (health <= 0)
+        if (currentHealth <= 0)
         {
-            Muerto();
+            CardDie();
         }
     }
 
-    public void Muerto()
+    public void CardDie()
     {
-        health = 0;
+        currentHealth = 0;
         if (!scriptCard.tableScript.enemyBoard)
         {
             scriptCard.tableScript.DeactivateButton();
@@ -54,164 +49,63 @@ public class CardStats : MonoBehaviour
 
     public void UpdateStats()
     {
-        scriptCard.lifeText.text = health.ToString();
-        scriptCard.attackText.text = attack.ToString();
-
+        scriptCard.lifeText.text = currentHealth.ToString();
+        scriptCard.attackText.text = currentAttack.ToString();
     }
 
-    public void TakeFire()
-    {
-        if (element1 == Element.wind || element2 == Element.wind)
-        {
-            health -= 2;
-            UpdateStats();
-            if (health <= 0)
-            {
-                Muerto();
-            }
-        }
-    }
-
-    public void TakeWater()
-    {
-        if (element1 == Element.fire || element2 == Element.fire)
-        {
-            health -= 2;
-            UpdateStats();
-            if (health <= 0)
-            {
-                Muerto();
-            }
-        }
-    }
-
-    public void TakeWind()
-    {
-        if (element1 == Element.water || element2 == Element.water)
-        {
-            health -= 2;
-            UpdateStats();
-            if (health <= 0)
-            {
-                Muerto();
-            }
-        }
-    }
-
-    public void AddElement(Element ElementAdded)
+    public void AddElement(CardStats elementalCard)
     {
         Vector3 position = transform.position;
-        switch (ElementAdded)
+        ElementType elementToAdd = elementalCard.currentElement;
+        currentAttack += elementalCard.cardData.attack;
+        currentHealth += elementalCard.cardData.health;
+        UpdateStats();
+        UpdateBuffTextColor(elementToAdd);
+
+        if (currentElement == ElementType.None)
         {
-            case Element.none:
-                break;
-            case Element.fire:
-                scriptCard.attackText.color = colorBuffText;
-                break;
-            case Element.water:
-                scriptCard.lifeText.color = colorBuffText;
+            currentElement = elementToAdd;
+            elementSpriteRenderer.gameObject.SetActive(true);
 
-                break;
-            case Element.wind:
-                scriptCard.lifeText.color = colorBuffText;
-                scriptCard.attackText.color = colorBuffText;
-
-                break;
-            default:
-                break;
-        }
-        if (element1 == Element.none)
-        {
-            element1 = ElementAdded;
-            elementObject.gameObject.SetActive(true);
-
-            if (ElementAdded == Element.fire)
+            if (elementToAdd == ElementType.Fire)
             {
-                elementObject.sprite = spritesElements[0];
-                FXManager.Instance.PlayEffect(ParticleType.Fire,position);
-                attack += 2;
-                UpdateStats();
+                elementSpriteRenderer.sprite = spritesElements[0];
+                FXManager.Instance.PlayEffect(ElementType.Fire, position);
             }
-            else if (ElementAdded == Element.wind)
+            else if (elementToAdd == ElementType.Wind)
             {
-                elementObject.sprite = spritesElements[1];
-                FXManager.Instance.PlayEffect(ParticleType.Wind, position);
-                attack += 1;
-                health += 1;
-                UpdateStats();
-
+                elementSpriteRenderer.sprite = spritesElements[1];
+                FXManager.Instance.PlayEffect(ElementType.Wind, position);
             }
-            else if (ElementAdded == Element.water)
+            else if (elementToAdd == ElementType.Water)
             {
-                elementObject.sprite = spritesElements[2];
-                FXManager.Instance.PlayEffect(ParticleType.Water, position);
-                health += 2;
-                UpdateStats();
-
+                elementSpriteRenderer.sprite = spritesElements[2];
+                FXManager.Instance.PlayEffect(ElementType.Water, position);
             }
         }
-        else if (element2 == Element.none)
+        else
         {
-            element2 = ElementAdded;
-
-            switch (element1)
+            switch (currentElement)
             {
-                case Element.none:
-                    break;
-                case Element.fire:
-                    if (ElementAdded == Element.wind)
+                case ElementType.Fire:
+                    if (elementToAdd == ElementType.Wind)
                     {
-                        elementObject.sprite = spritesElements[3];
-                        FXManager.Instance.PlayEffect(ParticleType.Tornado, position);
-                        attack += 1;
-                        health += 1;
-                        UpdateStats();
-                        
+                        currentElement = ElementType.Tornado;
+                        elementSpriteRenderer.sprite = spritesElements[3];
+                        FXManager.Instance.PlayEffect(ElementType.Tornado, position);
                     }
-                    else if (ElementAdded == Element.water)
+                    else if (elementToAdd == ElementType.Water)
                     {
-                        elementObject.sprite = spritesElements[4];
-                        FXManager.Instance.PlayEffect(ParticleType.Smoke, position);
-                        health += 2;
-                        UpdateStats();
+                        currentElement = ElementType.Smoke;
+                        elementSpriteRenderer.sprite = spritesElements[4];
+                        FXManager.Instance.PlayEffect(ElementType.Smoke, position);
                     }
                     break;
-                case Element.water:
-                    if (ElementAdded == Element.wind)
+                case ElementType.Water:
+                    if (elementToAdd == ElementType.Wind)
                     {
-                        elementObject.sprite = spritesElements[5];
-                        if (scriptCard.tableScript.scriptMuro.gameObject.activeSelf)
-                        {
-                            scriptCard.tableScript.scriptMuro.AddLife();
-                        }
-                        else
-                        {
-                            scriptCard.tableScript.scriptMuro.gameObject.SetActive(true);
-                        }                        
-                        FXManager.Instance.PlayEffect(ParticleType.Ice, position);
-                        attack += 1;
-                        health += 1;
-                        UpdateStats();
-                    }
-                    else if (ElementAdded == Element.fire)
-                    {
-                        elementObject.sprite = spritesElements[4];
-                        FXManager.Instance.PlayEffect(ParticleType.Smoke, position);
-                        attack += 2;
-                        UpdateStats();
-                    }
-                    break;
-                case Element.wind:
-                    if (ElementAdded == Element.fire)
-                    {
-                        elementObject.sprite = spritesElements[3];
-                        FXManager.Instance.PlayEffect(ParticleType.Tornado, position);
-                        attack += 2;
-                        UpdateStats();
-                    }
-                    else if (ElementAdded == Element.water)
-                    {
-                        elementObject.sprite = spritesElements[5];
+                        currentElement = ElementType.Ice;
+                        elementSpriteRenderer.sprite = spritesElements[5];
                         if (scriptCard.tableScript.scriptMuro.gameObject.activeSelf)
                         {
                             scriptCard.tableScript.scriptMuro.AddLife();
@@ -220,14 +114,77 @@ public class CardStats : MonoBehaviour
                         {
                             scriptCard.tableScript.scriptMuro.gameObject.SetActive(true);
                         }
-                        FXManager.Instance.PlayEffect(ParticleType.Ice, position);
-                        health += 2;
-                        UpdateStats();
+                        FXManager.Instance.PlayEffect(ElementType.Ice, position);
+                    }
+                    else if (elementToAdd == ElementType.Fire)
+                    {
+                        currentElement = ElementType.Smoke;
+                        elementSpriteRenderer.sprite = spritesElements[4];
+                        FXManager.Instance.PlayEffect(ElementType.Smoke, position);
+                    }
+                    break;
+
+                case ElementType.Wind:
+                    if (elementToAdd == ElementType.Fire)
+                    {
+                        currentElement = ElementType.Tornado;
+                        elementSpriteRenderer.sprite = spritesElements[3];
+                        FXManager.Instance.PlayEffect(ElementType.Tornado, position);
+                    }
+                    else if (elementToAdd == ElementType.Water)
+                    {
+                        currentElement = ElementType.Ice;
+                        elementSpriteRenderer.sprite = spritesElements[5];
+                        if (scriptCard.tableScript.scriptMuro.gameObject.activeSelf)
+                        {
+                            scriptCard.tableScript.scriptMuro.AddLife();
+                        }
+                        else
+                        {
+                            scriptCard.tableScript.scriptMuro.gameObject.SetActive(true);
+                        }
+                        FXManager.Instance.PlayEffect(ElementType.Ice, position);
                     }
                     break;
                 default:
                     break;
             }
+        }
+    }
+
+    public bool CanAddElement(ElementType element)
+    {
+        if (currentElement != element && (currentElement == ElementType.Fire || currentElement == ElementType.Wind || currentElement == ElementType.Water || currentElement == ElementType.None))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    private void UpdateBuffTextColor(ElementType ElementAdded)
+    {
+        switch (ElementAdded)
+        {
+            case ElementType.None:
+                break;
+
+            case ElementType.Fire:
+                scriptCard.attackText.color = colorBuffText;
+                break;
+
+            case ElementType.Water:
+                scriptCard.lifeText.color = colorBuffText;
+                break;
+
+            case ElementType.Wind:
+                scriptCard.lifeText.color = colorBuffText;
+                scriptCard.attackText.color = colorBuffText;
+                break;
+
+            default:
+                break;
         }
     }
 }
