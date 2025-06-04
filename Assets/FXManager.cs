@@ -1,3 +1,5 @@
+using System.Xml;
+using TMPro;
 using UnityEngine;
 
 public class FXManager : MonoBehaviour
@@ -19,6 +21,16 @@ public class FXManager : MonoBehaviour
     [SerializeField] private AudioSource tornadoSound;
     [SerializeField] private AudioSource iceSound;
 
+    [SerializeField] private Sprite windSprite;
+    [SerializeField] private Sprite fireSprite;
+    [SerializeField] private Sprite waterSprite;
+    [SerializeField] private Sprite smokeSprite;
+    [SerializeField] private Sprite tornadoSprite;
+    [SerializeField] private Sprite iceSprite;
+
+    [SerializeField] private TextMeshPro damageTMP;
+    [SerializeField] private Animator damageTextAnimator;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -29,48 +41,65 @@ public class FXManager : MonoBehaviour
         Instance = this;
     }
 
-    
-
-    public void PlayEffect(ElementType type, Vector3 position)
+    public void ShowDamageText(Vector3 position, int damageAmount)
     {
-        switch (type)
+        damageTMP.text = "-" + damageAmount.ToString();
+        damageTMP.transform.parent.transform.position = position;
+        damageTextAnimator.SetTrigger("Hit");
+    }
+
+    public void PlayEffect(ElementType element, CardState card)
+    {
+        switch (element)
         {
             case ElementType.Wind:
-                windParticles.transform.position = position;
+                card.elementSpriteRenderer.sprite = windSprite;
+                windParticles.transform.position = card.transform.position;
                 windParticles?.Play();
                 windSound?.Play();
                 break;
             case ElementType.Fire:
-                fireParticles.transform.position = position;
+                card.elementSpriteRenderer.sprite = fireSprite;
+                fireParticles.transform.position = card.transform.position;
                 fireParticles?.Play();
                 fireSound?.Play();
                 break;
             case ElementType.Water:
-                waterParticles.transform.position = position;
+                card.elementSpriteRenderer.sprite = waterSprite;
+                waterParticles.transform.position = card.transform.position;
                 waterParticles?.Play();
                 waterSound?.Play();
                 break;
             case ElementType.Smoke:
-                smokeParticles.transform.position = position;
+                card.elementSpriteRenderer.sprite = smokeSprite;
+                smokeParticles.transform.position = card.transform.position;
                 smokeParticles?.Play();
                 smokeSound?.Play();
                 break;
             case ElementType.Tornado:
-                tornadoParticles.transform.position = position;
+                card.elementSpriteRenderer.sprite = tornadoSprite;
+                tornadoParticles.transform.position = card.transform.position;
                 tornadoParticles?.Play();
                 tornadoSound?.Play();
                 break;
             case ElementType.Ice:
-                iceParticles.transform.position = position;
+                card.elementSpriteRenderer.sprite = iceSprite;
+                iceParticles.transform.position = card.transform.position;
                 iceParticles?.Play();
                 iceSound?.Play();
                 break;
-            case ElementType.TornadoAttack:
-                tornadoAttackParticles.transform.position = transform.position = new Vector3(position.x, position.y - 1, position.z);
-                tornadoAttackParticles?.Play();
-                tornadoSound?.Play();
-                break;
+            
         }
+    }
+    public void PlayEffect(ElementType element, Vector3 position)
+    {
+        if (element == ElementType.TornadoAttack)
+        {
+            tornadoAttackParticles.transform.position = transform.position = new Vector3(position.x, position.y - 1, position.z);
+            tornadoAttackParticles?.Play();
+            tornadoSound?.Play();
+        }
+        
     }
 }
 

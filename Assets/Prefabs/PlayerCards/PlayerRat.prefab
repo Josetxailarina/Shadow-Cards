@@ -42,23 +42,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 1267791108907225565}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1108788572d394f448a6dd5b24171fbb, type: 3}
+  m_Script: {fileID: 11500000, guid: 867252bd303a3a54d9bdf83c369f8c8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   cardData: {fileID: 11400000, guid: dab85c6b06289f54691c45f352da5dc4, type: 2}
   currentElement: 0
   currentHealth: 0
   currentAttack: 0
-  scriptCard: {fileID: 8238733303270611449}
+  scriptCard: {fileID: 0}
+  colorBuffText: {r: 0.07573871, g: 0.6981132, b: 0.15210627, a: 1}
   elementSpriteRenderer: {fileID: 1031725584169445162}
-  spritesElements:
-  - {fileID: 21300000, guid: 1513b2b4ecaa9074c9f630c36eb17acb, type: 3}
-  - {fileID: 21300000, guid: 6da65383eaf5df444b4abbb3631acf0c, type: 3}
-  - {fileID: 21300000, guid: 072ab94cd6ed8ab42a11cd7c32891826, type: 3}
-  - {fileID: 21300000, guid: eae5fce8a0b2cc141a2346dbf3e1307b, type: 3}
-  - {fileID: 21300000, guid: 5d9979a6e85cd2444870a69702d10238, type: 3}
-  - {fileID: 21300000, guid: fd11f39893cdd61479f330f55220026d, type: 3}
-  colorBuffText: {r: 0, g: 0.5764706, b: 0.05882353, a: 1}
 --- !u!1 &3825395097027092135
 GameObject:
   m_ObjectHideFlags: 0
@@ -71,7 +64,7 @@ GameObject:
   - component: {fileID: 292799225980009051}
   - component: {fileID: 8264330902610815654}
   m_Layer: 3
-  m_Name: attack
+  m_Name: attackText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -414,7 +407,7 @@ GameObject:
   - component: {fileID: 5402622364138222531}
   - component: {fileID: 1031725584169445162}
   m_Layer: 0
-  m_Name: fuego
+  m_Name: elementImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -499,7 +492,7 @@ GameObject:
   - component: {fileID: 5274499121394253279}
   - component: {fileID: 3234600836084300301}
   m_Layer: 3
-  m_Name: life
+  m_Name: healthText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

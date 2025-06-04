@@ -18,10 +18,10 @@ public class EnemyScript : MonoBehaviour
     public GameObject wind;
     public GameObject water;
 
-    public TableCards table1;
-    public TableCards table2;
-    public TableCards table3;
-    public TableCards table4;
+    public TableSlot table1;
+    public TableSlot table2;
+    public TableSlot table3;
+    public TableSlot table4;
 
     public ScriptTurn turnScript;
 
@@ -73,24 +73,24 @@ public class EnemyScript : MonoBehaviour
     }
     IEnumerator Attack()
     {
-        if (!table1.available)
+        if (!table1.isSlotEmpty)
         {
             EnemyAttack(table1);
             yield return new WaitForSecondsRealtime(0.8f);
         }
         
-        if (!table2.available)
+        if (!table2.isSlotEmpty)
         {
             EnemyAttack(table2);
             yield return new WaitForSecondsRealtime(0.8f);
             
         }
-        if (!table3.available)
+        if (!table3.isSlotEmpty)
         {
             EnemyAttack(table3);
             yield return new WaitForSecondsRealtime(0.8f);
         }
-        if (!table4.available)
+        if (!table4.isSlotEmpty)
         {
             EnemyAttack(table4);
             yield return new WaitForSecondsRealtime(0.8f);
@@ -98,7 +98,7 @@ public class EnemyScript : MonoBehaviour
         turnScript.NewTurn();
         GameManager.gameState = GameState.Play;
     }
-    public void EnemyAttack(TableCards Table)
+    public void EnemyAttack(TableSlot Table)
     {
         if (Table.statsCard.currentElement == ElementType.Smoke)
         {
@@ -276,18 +276,18 @@ public class EnemyScript : MonoBehaviour
 
    
 
-    private IEnumerator InstantiateAndMoveCoroutine(GameObject Card, TableCards table)
+    private IEnumerator InstantiateAndMoveCoroutine(GameObject Card, TableSlot table)
     {
         // Instancia el prefab en la posición del objeto que tiene el script con rotación identitaria
         GameObject instance = Instantiate(Card, transform.position, Quaternion.identity);
-        CardStats cardStats = instance.GetComponent<CardStats>();
+        CardState cardStats = instance.GetComponent<CardState>();
 
         // Configura el padre del prefab instanciado
         instance.transform.SetParent(table.gameObject.transform, true);
         instance.transform.localEulerAngles = Vector3.zero;
 
         bool isElementalCard = cardStats.cardData.isElementalCard;
-        bool reemplazar = !table.available && !isElementalCard;
+        bool reemplazar = !table.isSlotEmpty && !isElementalCard;
         GameObject cartaReemplazable = null;
 
         if (reemplazar)
@@ -297,12 +297,12 @@ public class EnemyScript : MonoBehaviour
 
         if (!isElementalCard)
         {
-            table.statsCard = instance.GetComponent<CardStats>();
+            table.statsCard = instance.GetComponent<CardState>();
             table.statsCard.scriptCard.DeactivateCollider();
             table.statsCard.scriptCard.tableScript = table;
-            table.available = false;
+            table.isSlotEmpty = false;
         }
-        else { instance.GetComponent<CardStats>().scriptCard.DeactivateCollider(); }
+        else { instance.GetComponent<CardState>().scriptCard.DeactivateCollider(); }
 
         // Inicializa la escala a 0
         instance.transform.localScale = Vector3.zero;

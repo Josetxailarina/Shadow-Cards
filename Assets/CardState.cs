@@ -1,16 +1,16 @@
 using UnityEngine;
 
-public class CardStats : MonoBehaviour
+public class CardState : MonoBehaviour
 {
     [SerializeField] public CardData cardData; // <--- ScriptableObject with card data
     
     [HideInInspector] public ElementType currentElement;
     [HideInInspector] public int currentHealth;
     [HideInInspector] public int currentAttack;
-    public CardScript scriptCard;
+    [HideInInspector] public CardScript scriptCard;
+    [SerializeField] private Color colorBuffText;
+
     public SpriteRenderer elementSpriteRenderer;
-    public Sprite[] spritesElements;
-    public Color colorBuffText;
 
     private void Awake()
     {
@@ -35,28 +35,28 @@ public class CardStats : MonoBehaviour
         }
     }
 
-    public void CardDie()
+    private void CardDie()
     {
         currentHealth = 0;
-        if (!scriptCard.tableScript.enemyBoard)
+        if (!scriptCard.tableScript.isEnemyTable)
         {
             scriptCard.tableScript.DeactivateButton();
         }
-        scriptCard.tableScript.available = true;
+        scriptCard.tableScript.isSlotEmpty = true;
         scriptCard.tableScript.statsCard = null;
         Destroy(gameObject);
     }
 
-    public void UpdateStats()
+    private void UpdateStats()
     {
         scriptCard.lifeText.text = currentHealth.ToString();
         scriptCard.attackText.text = currentAttack.ToString();
     }
 
-    public void AddElement(CardStats elementalCard)
+    public void AddElement(CardState elementalCard)
     {
-        Vector3 position = transform.position;
         ElementType elementToAdd = elementalCard.currentElement;
+
         currentAttack += elementalCard.cardData.attack;
         currentHealth += elementalCard.cardData.health;
         UpdateStats();
@@ -66,22 +66,7 @@ public class CardStats : MonoBehaviour
         {
             currentElement = elementToAdd;
             elementSpriteRenderer.gameObject.SetActive(true);
-
-            if (elementToAdd == ElementType.Fire)
-            {
-                elementSpriteRenderer.sprite = spritesElements[0];
-                FXManager.Instance.PlayEffect(ElementType.Fire, position);
-            }
-            else if (elementToAdd == ElementType.Wind)
-            {
-                elementSpriteRenderer.sprite = spritesElements[1];
-                FXManager.Instance.PlayEffect(ElementType.Wind, position);
-            }
-            else if (elementToAdd == ElementType.Water)
-            {
-                elementSpriteRenderer.sprite = spritesElements[2];
-                FXManager.Instance.PlayEffect(ElementType.Water, position);
-            }
+            FXManager.Instance.PlayEffect(currentElement, this);
         }
         else
         {
@@ -91,36 +76,32 @@ public class CardStats : MonoBehaviour
                     if (elementToAdd == ElementType.Wind)
                     {
                         currentElement = ElementType.Tornado;
-                        elementSpriteRenderer.sprite = spritesElements[3];
-                        FXManager.Instance.PlayEffect(ElementType.Tornado, position);
+                        FXManager.Instance.PlayEffect(ElementType.Tornado, this);
                     }
                     else if (elementToAdd == ElementType.Water)
                     {
                         currentElement = ElementType.Smoke;
-                        elementSpriteRenderer.sprite = spritesElements[4];
-                        FXManager.Instance.PlayEffect(ElementType.Smoke, position);
+                        FXManager.Instance.PlayEffect(ElementType.Smoke, this);
                     }
                     break;
                 case ElementType.Water:
                     if (elementToAdd == ElementType.Wind)
                     {
                         currentElement = ElementType.Ice;
-                        elementSpriteRenderer.sprite = spritesElements[5];
-                        if (scriptCard.tableScript.scriptMuro.gameObject.activeSelf)
+                        if (scriptCard.tableScript.iceWallScript.gameObject.activeSelf)
                         {
-                            scriptCard.tableScript.scriptMuro.AddLife();
+                            scriptCard.tableScript.iceWallScript.AddLife();
                         }
                         else
                         {
-                            scriptCard.tableScript.scriptMuro.gameObject.SetActive(true);
+                            scriptCard.tableScript.iceWallScript.gameObject.SetActive(true);
                         }
-                        FXManager.Instance.PlayEffect(ElementType.Ice, position);
+                        FXManager.Instance.PlayEffect(ElementType.Ice, this);
                     }
                     else if (elementToAdd == ElementType.Fire)
                     {
                         currentElement = ElementType.Smoke;
-                        elementSpriteRenderer.sprite = spritesElements[4];
-                        FXManager.Instance.PlayEffect(ElementType.Smoke, position);
+                        FXManager.Instance.PlayEffect(ElementType.Smoke, this);
                     }
                     break;
 
@@ -128,22 +109,20 @@ public class CardStats : MonoBehaviour
                     if (elementToAdd == ElementType.Fire)
                     {
                         currentElement = ElementType.Tornado;
-                        elementSpriteRenderer.sprite = spritesElements[3];
-                        FXManager.Instance.PlayEffect(ElementType.Tornado, position);
+                        FXManager.Instance.PlayEffect(ElementType.Tornado, this);
                     }
                     else if (elementToAdd == ElementType.Water)
                     {
                         currentElement = ElementType.Ice;
-                        elementSpriteRenderer.sprite = spritesElements[5];
-                        if (scriptCard.tableScript.scriptMuro.gameObject.activeSelf)
+                        if (scriptCard.tableScript.iceWallScript.gameObject.activeSelf)
                         {
-                            scriptCard.tableScript.scriptMuro.AddLife();
+                            scriptCard.tableScript.iceWallScript.AddLife();
                         }
                         else
                         {
-                            scriptCard.tableScript.scriptMuro.gameObject.SetActive(true);
+                            scriptCard.tableScript.iceWallScript.gameObject.SetActive(true);
                         }
-                        FXManager.Instance.PlayEffect(ElementType.Ice, position);
+                        FXManager.Instance.PlayEffect(ElementType.Ice, this);
                     }
                     break;
                 default:

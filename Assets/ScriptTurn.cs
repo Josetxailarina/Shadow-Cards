@@ -7,7 +7,7 @@ public class ScriptTurn : MonoBehaviour
     public EnemyScript enemyScript;
     private AudioSource passAudio;
     private SpriteRenderer sprite;
-    public TableCards[] playerTableCards;
+    public TableSlot[] playerTableCards;
     public PlayerDeck mazoScript;
     public static int turn;
     public GameObject panelSeguridad;
@@ -99,9 +99,9 @@ public class ScriptTurn : MonoBehaviour
         ContadoresScript.UpdateStats();
         sprite.color = new Color(1f, 1f, 1f, 1);
         StartCoroutine(mazoScript.DrawSomeCards(2));
-        foreach (TableCards script in playerTableCards)
+        foreach (TableSlot script in playerTableCards)
         {
-            if (!script.available)
+            if (!script.isSlotEmpty)
             {
                 script.ActivateButton();
             }
@@ -125,8 +125,8 @@ public class ScriptTurn : MonoBehaviour
    
     public bool CheckManaUsefull()
     {
-        CardStats[] cards = mano.GetComponentsInChildren<CardStats>();
-        foreach (CardStats card in cards)
+        CardState[] cards = mano.GetComponentsInChildren<CardState>();
+        foreach (CardState card in cards)
         {
             if (card.cardData.cost <= ContadoresScript.mana)
             {
@@ -138,7 +138,7 @@ public class ScriptTurn : MonoBehaviour
     public void EndTurn()
     {
         sprite.color = new Color(0.25f, 0.25f, 0.25f, 1);
-        foreach (TableCards script in playerTableCards)
+        foreach (TableSlot script in playerTableCards)
         {
             script.DeactivateButton();
         }

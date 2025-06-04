@@ -20,8 +20,8 @@ public class CardScript : MonoBehaviour
     private GameObject parentGameobject;
     private PlayerHandLayout playerHandLayout;
     private Vector3 targetPosition;
-    public TableCards tableScript;
-    private CardStats cardStats;
+    public TableSlot tableScript;
+    private CardState cardStats;
 
 
     private void Awake()
@@ -41,7 +41,7 @@ public class CardScript : MonoBehaviour
         mainCamera = Camera.main;
         parentGameobject = transform.parent.gameObject;
         playerHandLayout = FindObjectOfType<PlayerHandLayout>();
-        cardStats = GetComponentInParent<CardStats>();
+        cardStats = GetComponentInParent<CardState>();
     }
 
     private void Update()
@@ -56,10 +56,9 @@ public class CardScript : MonoBehaviour
 
             // Establece la posición del GameObject en la posición del ratón en el mundo.
             parentGameobject.transform.position = new Vector3(mouseWorldPosition.x, mouseWorldPosition.y, parentGameobject.transform.position.z);
-
-
         }
     }
+
     public void DeactivateCollider()
     {
         cardCollider.enabled = false;
@@ -74,7 +73,7 @@ public class CardScript : MonoBehaviour
         if (cardStats.currentElement == ElementType.Tornado)
         {
             StartCoroutine(AttackSides());
-            FXManager.Instance.PlayEffect(ElementType.TornadoAttack,tableScript.oppositeCard.transform.position);
+            FXManager.Instance.PlayEffect(ElementType.TornadoAttack,tableScript.oppositeTableSlot.transform.position);
         }
         else
         {
@@ -84,8 +83,11 @@ public class CardScript : MonoBehaviour
     IEnumerator AttackSides()
     {
         tableScript.Attack(Direction.Left);
+
         yield return new WaitForSecondsRealtime(0.39f);
+
         tableScript.Attack(Direction.Center);
+
         yield return new WaitForSecondsRealtime(0.39f);
 
         tableScript.Attack(Direction.Right);
@@ -143,7 +145,7 @@ public class CardScript : MonoBehaviour
         {
             if (!cardStats.cardData.isElementalCard && tableScript != null)
             {
-                if (!tableScript.available)
+                if (!tableScript.isSlotEmpty)
                 {
                     tableScript.statsCard.scriptCard = null;
 
@@ -151,9 +153,9 @@ public class CardScript : MonoBehaviour
 
                     tableScript.statsCard = null;
                 }
-                tableScript.available = false;
+                tableScript.isSlotEmpty = false;
                 tableScript.ActivateButton();
-                tableScript.statsCard = transform.parent.GetComponent<CardStats>();
+                tableScript.statsCard = transform.parent.GetComponent<CardState>();
                 tableScript.statsCard.scriptCard = this;
                 transform.parent.parent = tableScript.gameObject.transform;
                 StartCoroutine(MoveFromTo(parentGameobject.transform.position, targetPosition, 0.15f));
@@ -163,7 +165,7 @@ public class CardScript : MonoBehaviour
 
 
             }
-            else if (cardStats.cardData.isElementalCard && tableScript != null && !tableScript.available && tableScript.statsCard.CanAddElement(cardStats.cardData.element))
+            else if (cardStats.cardData.isElementalCard && tableScript != null && !tableScript.isSlotEmpty && tableScript.statsCard.CanAddElement(cardStats.cardData.element))
             {
                 tableScript.statsCard.AddElement(cardStats);
                 ContadoresScript.BajarMana(cardStats.cardData.cost);
@@ -188,16 +190,14 @@ public class CardScript : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         targetPosition = collision.transform.position;
-        tableScript = collision.GetComponent<TableCards>();
-        if (cardStats.cardData.isElementalCard && tableScript != null && !tableScript.available && tableScript.statsCard.CanAddElement(cardStats.cardData.element))
+        tableScript = collision.GetComponent<TableSlot>();
+        if (cardStats.cardData.isElementalCard && tableScript != null && !tableScript.isSlotEmpty && tableScript.statsCard.CanAddElement(cardStats.cardData.element))
         {
             tableScript.GoGreen();
-            print("go green");
         }
         else
         {
             tableScript.GoRed();
-            print("go red");
         }
     }
     private void OnTriggerExit2D(Collider2D collision)

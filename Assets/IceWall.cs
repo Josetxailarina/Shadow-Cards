@@ -1,11 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class MuroScript : MonoBehaviour
+public class IceWall : MonoBehaviour
 {
-    public TableCards[] tableScripts;
+    public TableSlot[] tableScripts;
     public TextMeshPro lifeText;
     private Animator textAnim;
     private int life;
@@ -18,9 +16,9 @@ public class MuroScript : MonoBehaviour
     {
         life = 5;
         UpdateLife();
-        foreach (TableCards scripts in tableScripts)
+        foreach (TableSlot scripts in tableScripts)
         {
-            scripts.protection = true;
+            scripts.hasProtection = true;
         }
     }
     public void AddLife()
@@ -40,9 +38,9 @@ public class MuroScript : MonoBehaviour
 
         if (life <= 0)
         {
-            foreach (TableCards scripts in tableScripts) 
+            foreach (TableSlot scripts in tableScripts) 
             { 
-            scripts.protection = false;
+            scripts.hasProtection = false;
             }
             SoundManager.instance.iceBreakSound.Play();
             gameObject.SetActive(false);
