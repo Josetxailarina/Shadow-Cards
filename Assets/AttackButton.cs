@@ -7,27 +7,27 @@ public class AttackButton : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (tableScript.statsCard.currentElement == ElementType.Smoke)
+        if (tableScript.currentCardInSlot.currentElement == ElementType.Smoke)
         {
-            if (tableScript.isEnemyTable)
+            if (tableScript.isEnemySlot)
             {
-                tableScript.statsCard.scriptCard.SortingOrderUp(20);
-                tableScript.statsCard.scriptCard.anim.SetTrigger("EnemyDoble");
+                tableScript.currentCardInSlot.scriptCard.SortingOrderUp(20);
+                tableScript.currentCardInSlot.scriptCard.cardAnimator.SetTrigger("EnemyDoble");
                 gameObject.SetActive(false);
             }
             else
             {
 
 
-                tableScript.statsCard.scriptCard.SortingOrderUp(20);
-                tableScript.statsCard.scriptCard.anim.SetTrigger("DobleAttack");
+                tableScript.currentCardInSlot.scriptCard.SortingOrderUp(20);
+                tableScript.currentCardInSlot.scriptCard.cardAnimator.SetTrigger("DobleAttack");
                 gameObject.SetActive(false);
             }
         }
         else
         {
-            tableScript.statsCard.scriptCard.SortingOrderUp(20);
-            tableScript.statsCard.scriptCard.anim.SetTrigger("Attack");
+            tableScript.currentCardInSlot.scriptCard.SortingOrderUp(20);
+            tableScript.currentCardInSlot.scriptCard.cardAnimator.SetTrigger("Attack");
             gameObject.SetActive(false);
         }
     }

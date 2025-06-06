@@ -100,13 +100,13 @@ public class EnemyScript : MonoBehaviour
     }
     public void EnemyAttack(TableSlot Table)
     {
-        if (Table.statsCard.currentElement == ElementType.Smoke)
+        if (Table.currentCardInSlot.currentElement == ElementType.Smoke)
         {
-            Table.statsCard.scriptCard.anim.SetTrigger("EnemyDoble");
+            Table.currentCardInSlot.scriptCard.cardAnimator.SetTrigger("EnemyDoble");
         }
         else
         {
-            Table.statsCard.scriptCard.anim.SetTrigger("EnemyAttack");
+            Table.currentCardInSlot.scriptCard.cardAnimator.SetTrigger("EnemyAttack");
 
         }
     }
@@ -129,7 +129,7 @@ public class EnemyScript : MonoBehaviour
 
         StartCoroutine(InstantiateAndMoveCoroutine(cat, table3));
         yield return new WaitForSecondsRealtime(0.5f);
-        if (table1.statsCard != null)
+        if (table1.currentCardInSlot != null)
         {
             StartCoroutine(InstantiateAndMoveCoroutine(fire, table1));
 
@@ -186,7 +186,7 @@ public class EnemyScript : MonoBehaviour
         yield return new WaitForSecondsRealtime(0.5f);
         StartCoroutine(InstantiateAndMoveCoroutine(dog, table1));
         yield return new WaitForSecondsRealtime(0.5f);
-        if (table3.statsCard != null)
+        if (table3.currentCardInSlot != null)
         {
             StartCoroutine(InstantiateAndMoveCoroutine(wind, table3));
         }
@@ -211,7 +211,7 @@ public class EnemyScript : MonoBehaviour
         StartCoroutine(InstantiateAndMoveCoroutine(effigy, table4));
         
         yield return new WaitForSecondsRealtime(0.5f);
-        if (table4.statsCard != null)
+        if (table4.currentCardInSlot != null)
         {
             StartCoroutine(InstantiateAndMoveCoroutine(fire, table4));
         }
@@ -243,7 +243,7 @@ public class EnemyScript : MonoBehaviour
 
         StartCoroutine(InstantiateAndMoveCoroutine(whale, table1));
         yield return new WaitForSecondsRealtime(0.5f);
-        if (table2.statsCard != null)
+        if (table2.currentCardInSlot != null)
         { 
         StartCoroutine(InstantiateAndMoveCoroutine(water,table2));
         }
@@ -292,14 +292,14 @@ public class EnemyScript : MonoBehaviour
 
         if (reemplazar)
         {
-            cartaReemplazable = table.statsCard.gameObject;
+            cartaReemplazable = table.currentCardInSlot.gameObject;
         }
 
         if (!isElementalCard)
         {
-            table.statsCard = instance.GetComponent<CardState>();
-            table.statsCard.scriptCard.DeactivateCollider();
-            table.statsCard.scriptCard.tableScript = table;
+            table.currentCardInSlot = instance.GetComponent<CardState>();
+            table.currentCardInSlot.scriptCard.DeactivateCollider();
+            table.currentCardInSlot.scriptCard.currentTableSlot = table;
             table.isSlotEmpty = false;
         }
         else { instance.GetComponent<CardState>().scriptCard.DeactivateCollider(); }
@@ -334,7 +334,7 @@ public class EnemyScript : MonoBehaviour
 
         if (isElementalCard)
         {
-            table.statsCard?.AddElement(cardStats);
+            table.currentCardInSlot?.AddElement(cardStats);
             Destroy(instance);
         }
         else if (reemplazar)

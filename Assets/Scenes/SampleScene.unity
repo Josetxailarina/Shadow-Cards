@@ -919,6 +919,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 733967060}
     - target: {fileID: 5239635995299841295, guid: a383c173c8222c84087bbc7a8b836637, type: 3}
+      propertyPath: isEnemySlot
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5239635995299841295, guid: a383c173c8222c84087bbc7a8b836637, type: 3}
       propertyPath: isEnemyTable
       value: 1
       objectReference: {fileID: 0}
@@ -1318,7 +1322,7 @@ GameObject:
   m_Component:
   - component: {fileID: 396916279}
   m_Layer: 0
-  m_Name: ---- MANAGERS ----
+  m_Name: ------ MANAGERS ------
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2312,6 +2316,134 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   onButtonSprite: {fileID: 21300000, guid: 3e8fc602128c929428830ff14591d34e, type: 3}
   offButtonSprite: {fileID: 21300000, guid: c8bbc1c3995b6194d981d4bfc9c0a242, type: 3}
+--- !u!1 &618718032
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 618718034}
+  - component: {fileID: 618718033}
+  m_Layer: 0
+  m_Name: AttackSound
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!82 &618718033
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 618718032}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: dedd6d3231425bc478f9b66830f9ba9e, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!4 &618718034
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 618718032}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -1776.4937, y: -586.4095, z: 5.7765784}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1538950300}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &664413654 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6896006218369616341, guid: a383c173c8222c84087bbc7a8b836637, type: 3}
@@ -3937,7 +4069,7 @@ GameObject:
   m_Component:
   - component: {fileID: 921527255}
   m_Layer: 0
-  m_Name: ---- HUB ----
+  m_Name: --------- HUB ---------
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7370,6 +7502,7 @@ Transform:
   - {fileID: 929216889}
   - {fileID: 827242214}
   - {fileID: 749667008}
+  - {fileID: 618718034}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1538950301
@@ -7388,6 +7521,7 @@ MonoBehaviour:
   useCardSound: {fileID: 929216888}
   selectCardSound: {fileID: 827242213}
   takeCardSound: {fileID: 2023750628}
+  attackSound: {fileID: 618718033}
 --- !u!1 &1618360760
 GameObject:
   m_ObjectHideFlags: 0
@@ -7848,6 +7982,10 @@ PrefabInstance:
       propertyPath: dmgAnimator
       value: 
       objectReference: {fileID: 733967060}
+    - target: {fileID: 5239635995299841295, guid: a383c173c8222c84087bbc7a8b836637, type: 3}
+      propertyPath: isEnemySlot
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5239635995299841295, guid: a383c173c8222c84087bbc7a8b836637, type: 3}
       propertyPath: isEnemyTable
       value: 1
@@ -8332,6 +8470,10 @@ PrefabInstance:
       propertyPath: dmgAnimator
       value: 
       objectReference: {fileID: 733967060}
+    - target: {fileID: 5239635995299841295, guid: a383c173c8222c84087bbc7a8b836637, type: 3}
+      propertyPath: isEnemySlot
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5239635995299841295, guid: a383c173c8222c84087bbc7a8b836637, type: 3}
       propertyPath: isEnemyTable
       value: 1
@@ -9861,6 +10003,10 @@ PrefabInstance:
       propertyPath: dmgAnimator
       value: 
       objectReference: {fileID: 733967060}
+    - target: {fileID: 5239635995299841295, guid: a383c173c8222c84087bbc7a8b836637, type: 3}
+      propertyPath: isEnemySlot
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5239635995299841295, guid: a383c173c8222c84087bbc7a8b836637, type: 3}
       propertyPath: isEnemyTable
       value: 1

@@ -8,6 +8,7 @@ public class SoundManager : MonoBehaviour
     public AudioSource useCardSound;
     public AudioSource selectCardSound;
     public AudioSource takeCardSound;
+    public AudioSource attackSound;
 
     private void Awake()
     {

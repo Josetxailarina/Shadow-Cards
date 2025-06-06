@@ -1,44 +1,94 @@
-using TMPro;
 using UnityEngine;
 
 public class TableSlot : MonoBehaviour
 {
-    [HideInInspector] public CardState statsCard;
+    [HideInInspector] public CardState currentCardInSlot;
     [HideInInspector] public bool isSlotEmpty = true;
     [HideInInspector] public bool hasProtection = false;
 
-    public bool isEnemyTable;
-
+    public bool isEnemySlot;
     public AttackButton attackButton;
     public TableSlot oppositeTableSlot;
-    public IceWall iceWallScript;
-    public TableSlot leftTableSlot;
-    public TableSlot rightTableSlot;
+    
+    [SerializeField] private IceWall iceWallScript;
+    [SerializeField] private TableSlot leftTableSlot;
+    [SerializeField] private TableSlot rightTableSlot;
 
-
-    private AudioSource hitSound;
     private SpriteRenderer slotSpriteRenderer;
+
 
     private void Start()
     {
         slotSpriteRenderer = GetComponent<SpriteRenderer>();
-        hitSound = GetComponent<AudioSource>();
     }
 
-    public void Attack(Direction direction)
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        HandleSlotState(collision);
+    }
+
+
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        slotSpriteRenderer.enabled = false;
+    }
+
+
+
+    public void PerformAttack(Direction direction)
     {
         TableSlot targetCard = GetTargetCard(direction);
         if (targetCard == null) return;
 
-        hitSound.Play();
+        SoundManager.instance.attackSound.Play();
 
         if (targetCard.hasProtection)
         {
-            targetCard.iceWallScript.TakeDamage(statsCard.currentAttack);
+            targetCard.iceWallScript.TakeDamage(currentCardInSlot.currentAttack);
         }
         else
         {
             HandleDamage(targetCard);
+        }
+    }
+
+
+    private void HandleSlotState(Collider2D collision)
+    {
+        if (GameManager.isDraggingCard)
+        {
+            if (collision.CompareTag("AnimalCard"))
+            {
+                GoGreen();
+            }
+            else if (collision.CompareTag("ElementalCard"))
+            {
+                CardBehavior collisionCard = collision.GetComponent<CardBehavior>();
+                if (!isSlotEmpty && currentCardInSlot.CanAddElement(collisionCard.cardState.cardData.element))
+                {
+                    GoGreen();
+                }
+                else
+                {
+                    GoRed();
+                }
+            }
+        }
+    }
+
+   
+    
+    public void AddIceWall()
+    {
+        if (hasProtection)
+        {
+            iceWallScript.AddHealthToWall();
+        }
+        else
+        {
+            iceWallScript.gameObject.SetActive(true);
         }
     }
 
@@ -57,35 +107,27 @@ public class TableSlot : MonoBehaviour
         }
     }
 
-    private void HandleDamage(TableSlot targetCard)
+    private void HandleDamage(TableSlot targetTableSlot)
     {
-        FXManager.Instance.ShowDamageText(targetCard.transform.position, statsCard.currentAttack);
-        if (!targetCard.isSlotEmpty) // Si hay una carta en frente
+        FXManager.Instance.ShowDamageText(targetTableSlot.transform.position, currentCardInSlot.currentAttack);
+        
+        if (!targetTableSlot.isSlotEmpty) // if there is a card in the target slot
         {
-            targetCard.statsCard.TakeDamage(statsCard.currentAttack);
+            targetTableSlot.currentCardInSlot.TakeDamage(currentCardInSlot.currentAttack);
         }
-        else if (!isEnemyTable)
+        else if (!isEnemySlot)
         {
-            ContadoresScript.BajarVidaBoss(statsCard.currentAttack);
+            ContadoresScript.ReduceBossHealth(currentCardInSlot.currentAttack);
         }
         else
         {
-            ContadoresScript.BajarVida(statsCard.currentAttack);
+            ContadoresScript.ReducePlayerHealth(currentCardInSlot.currentAttack);
         }
     }
 
   
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (GameManager.movingCard)
-        {
-            if (collision.CompareTag("Animal"))
-            {
-                 GoGreen();
-            }
-        }
-    }
+   
 
     public void GoRed()
     {
@@ -99,17 +141,14 @@ public class TableSlot : MonoBehaviour
         slotSpriteRenderer.color = Color.green;
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        slotSpriteRenderer.enabled = false;
-    }
+    
 
-    public void ActivateButton()
+    public void EnableAttackButton()
     {
         attackButton.gameObject.SetActive(true);
     }
 
-    public void DeactivateButton()
+    public void DisableAttackButton()
     {
         attackButton.gameObject.SetActive(false);
     }

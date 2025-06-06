@@ -70,7 +70,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4161385574759646845, guid: dc30aaafd4b00f24cbc6bce34691416f, type: 3}
       propertyPath: m_TagString
-      value: Potion
+      value: ElementalCard
       objectReference: {fileID: 0}
     - target: {fileID: 5814235390234399884, guid: dc30aaafd4b00f24cbc6bce34691416f, type: 3}
       propertyPath: m_IsActive

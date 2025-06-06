@@ -46,12 +46,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardData: {fileID: 11400000, guid: dab85c6b06289f54691c45f352da5dc4, type: 2}
+  elementSpriteRenderer: {fileID: 1031725584169445162}
   currentElement: 0
   currentHealth: 0
   currentAttack: 0
   scriptCard: {fileID: 0}
   colorBuffText: {r: 0.07573871, g: 0.6981132, b: 0.15210627, a: 1}
-  elementSpriteRenderer: {fileID: 1031725584169445162}
+  attackText: {fileID: 8264330902610815654}
+  healthText: {fileID: 3234600836084300301}
 --- !u!1 &3825395097027092135
 GameObject:
   m_ObjectHideFlags: 0
@@ -236,9 +238,11 @@ GameObject:
   - component: {fileID: 2391894254163741086}
   - component: {fileID: 8238733303270611449}
   - component: {fileID: 7999774976899680676}
+  - component: {fileID: 1148468289451681405}
+  - component: {fileID: 1857261313474162872}
   m_Layer: 3
   m_Name: CARD CUERVO
-  m_TagString: Animal
+  m_TagString: AnimalCard
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -348,9 +352,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   anim: {fileID: 0}
   elementSpriteRenderer: {fileID: 1031725584169445162}
-  lifeText: {fileID: 3234600836084300301}
-  attackText: {fileID: 8264330902610815654}
-  tableScript: {fileID: 0}
+  currentTableSlot: {fileID: 0}
+  cardStats: {fileID: 0}
 --- !u!61 &7999774976899680676
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -396,6 +399,30 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 4.28, y: 9.311138}
   m_EdgeRadius: 0
+--- !u!210 &1148468289451681405
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4161385574759646845}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 5
+  m_SortAtRoot: 0
+--- !u!114 &1857261313474162872
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4161385574759646845}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97c07015f2463aa478540b1d496db926, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4861471434529933770
 GameObject:
   m_ObjectHideFlags: 0

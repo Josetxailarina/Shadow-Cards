@@ -21,7 +21,7 @@ public class IceWall : MonoBehaviour
             scripts.hasProtection = true;
         }
     }
-    public void AddLife()
+    public void AddHealthToWall()
     {
         life += 5;
         UpdateLife();

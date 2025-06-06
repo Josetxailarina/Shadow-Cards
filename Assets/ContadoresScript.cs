@@ -52,7 +52,7 @@ public class ContadoresScript : MonoBehaviour
         bossLifeText.text = bossLife.ToString();
     }
 
-    public static void BajarVida(int Cantidad)
+    public static void ReducePlayerHealth(int Cantidad)
     {
         life -= Cantidad;
         lifeText.text = life.ToString();
@@ -64,7 +64,7 @@ public class ContadoresScript : MonoBehaviour
 
         }
     }
-    public static void BajarVidaBoss(int Cantidad)
+    public static void ReduceBossHealth(int Cantidad)
     {
         bossLife -= Cantidad;
         bossLifeText.text = bossLife.ToString();

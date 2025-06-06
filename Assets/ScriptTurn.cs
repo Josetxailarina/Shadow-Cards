@@ -103,7 +103,7 @@ public class ScriptTurn : MonoBehaviour
         {
             if (!script.isSlotEmpty)
             {
-                script.ActivateButton();
+                script.EnableAttackButton();
             }
         }
     }
@@ -140,7 +140,7 @@ public class ScriptTurn : MonoBehaviour
         sprite.color = new Color(0.25f, 0.25f, 0.25f, 1);
         foreach (TableSlot script in playerTableCards)
         {
-            script.DeactivateButton();
+            script.DisableAttackButton();
         }
         GameManager.gameState = GameState.AutoMove;
         passAudio.Play();

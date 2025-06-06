@@ -10,13 +10,13 @@ public enum GameState
 public class GameManager : MonoBehaviour
 {
     public static GameState gameState = GameState.Menu;
-    public static bool movingCard = false;
+    public static bool isDraggingCard = false;
     // Start is called before the first frame update
 
     public void RestartGame()
     {
         gameState = GameState.Play;
-        movingCard = false;
+        isDraggingCard = false;
         string currentSceneName = SceneManager.GetActiveScene().name;
         SceneManager.LoadScene(currentSceneName);
     }

@@ -1,20 +1,23 @@
+using TMPro;
 using UnityEngine;
 
 public class CardState : MonoBehaviour
 {
-    [SerializeField] public CardData cardData; // <--- ScriptableObject with card data
-    
+    public CardData cardData; // <--- ScriptableObject with card data
+    public SpriteRenderer elementSpriteRenderer;
+
     [HideInInspector] public ElementType currentElement;
     [HideInInspector] public int currentHealth;
     [HideInInspector] public int currentAttack;
-    [HideInInspector] public CardScript scriptCard;
+    [HideInInspector] public CardBehavior scriptCard;
     [SerializeField] private Color colorBuffText;
+    [SerializeField] private TextMeshPro attackText;
+    [SerializeField] private TextMeshPro healthText;
 
-    public SpriteRenderer elementSpriteRenderer;
 
     private void Awake()
     {
-        scriptCard = GetComponentInChildren<CardScript>();
+        scriptCard = GetComponentInChildren<CardBehavior>();
         currentAttack = cardData.attack;
         currentHealth = cardData.health;
         currentElement = cardData.element;
@@ -31,31 +34,12 @@ public class CardState : MonoBehaviour
         UpdateStats();
         if (currentHealth <= 0)
         {
-            CardDie();
+            HandleCardDeath();
         }
     }
-
-    private void CardDie()
-    {
-        currentHealth = 0;
-        if (!scriptCard.tableScript.isEnemyTable)
-        {
-            scriptCard.tableScript.DeactivateButton();
-        }
-        scriptCard.tableScript.isSlotEmpty = true;
-        scriptCard.tableScript.statsCard = null;
-        Destroy(gameObject);
-    }
-
-    private void UpdateStats()
-    {
-        scriptCard.lifeText.text = currentHealth.ToString();
-        scriptCard.attackText.text = currentAttack.ToString();
-    }
-
     public void AddElement(CardState elementalCard)
     {
-        ElementType elementToAdd = elementalCard.currentElement;
+        ElementType elementToAdd = elementalCard.cardData.element;
 
         currentAttack += elementalCard.cardData.attack;
         currentHealth += elementalCard.cardData.health;
@@ -70,65 +54,30 @@ public class CardState : MonoBehaviour
         }
         else
         {
-            switch (currentElement)
+            currentElement = CombineElements(currentElement, elementToAdd);
+            FXManager.Instance.PlayEffect(currentElement, this);
+            if (currentElement == ElementType.Ice)
             {
-                case ElementType.Fire:
-                    if (elementToAdd == ElementType.Wind)
-                    {
-                        currentElement = ElementType.Tornado;
-                        FXManager.Instance.PlayEffect(ElementType.Tornado, this);
-                    }
-                    else if (elementToAdd == ElementType.Water)
-                    {
-                        currentElement = ElementType.Smoke;
-                        FXManager.Instance.PlayEffect(ElementType.Smoke, this);
-                    }
-                    break;
-                case ElementType.Water:
-                    if (elementToAdd == ElementType.Wind)
-                    {
-                        currentElement = ElementType.Ice;
-                        if (scriptCard.tableScript.iceWallScript.gameObject.activeSelf)
-                        {
-                            scriptCard.tableScript.iceWallScript.AddLife();
-                        }
-                        else
-                        {
-                            scriptCard.tableScript.iceWallScript.gameObject.SetActive(true);
-                        }
-                        FXManager.Instance.PlayEffect(ElementType.Ice, this);
-                    }
-                    else if (elementToAdd == ElementType.Fire)
-                    {
-                        currentElement = ElementType.Smoke;
-                        FXManager.Instance.PlayEffect(ElementType.Smoke, this);
-                    }
-                    break;
-
-                case ElementType.Wind:
-                    if (elementToAdd == ElementType.Fire)
-                    {
-                        currentElement = ElementType.Tornado;
-                        FXManager.Instance.PlayEffect(ElementType.Tornado, this);
-                    }
-                    else if (elementToAdd == ElementType.Water)
-                    {
-                        currentElement = ElementType.Ice;
-                        if (scriptCard.tableScript.iceWallScript.gameObject.activeSelf)
-                        {
-                            scriptCard.tableScript.iceWallScript.AddLife();
-                        }
-                        else
-                        {
-                            scriptCard.tableScript.iceWallScript.gameObject.SetActive(true);
-                        }
-                        FXManager.Instance.PlayEffect(ElementType.Ice, this);
-                    }
-                    break;
-                default:
-                    break;
+                scriptCard.currentTableSlot.AddIceWall();
             }
+
         }
+    }
+    private ElementType CombineElements(ElementType baseElement, ElementType elementToAdd)
+    {
+        if (baseElement == ElementType.Fire && elementToAdd == ElementType.Wind ||
+            baseElement == ElementType.Wind && elementToAdd == ElementType.Fire)
+            return ElementType.Tornado;
+
+        if (baseElement == ElementType.Fire && elementToAdd == ElementType.Water ||
+            baseElement == ElementType.Water && elementToAdd == ElementType.Fire)
+            return ElementType.Smoke;
+
+        if (baseElement == ElementType.Water && elementToAdd == ElementType.Wind ||
+            baseElement == ElementType.Wind && elementToAdd == ElementType.Water)
+            return ElementType.Ice;
+
+        return baseElement;
     }
 
     public bool CanAddElement(ElementType element)
@@ -150,20 +99,38 @@ public class CardState : MonoBehaviour
                 break;
 
             case ElementType.Fire:
-                scriptCard.attackText.color = colorBuffText;
+                attackText.color = colorBuffText;
                 break;
 
             case ElementType.Water:
-                scriptCard.lifeText.color = colorBuffText;
+                healthText.color = colorBuffText;
                 break;
 
             case ElementType.Wind:
-                scriptCard.lifeText.color = colorBuffText;
-                scriptCard.attackText.color = colorBuffText;
+                healthText.color = colorBuffText;
+                attackText.color = colorBuffText;
                 break;
 
             default:
                 break;
         }
+    }
+
+    private void HandleCardDeath()
+    {
+        currentHealth = 0;
+        if (!scriptCard.currentTableSlot.isEnemySlot)
+        {
+            scriptCard.currentTableSlot.DisableAttackButton();
+        }
+        scriptCard.currentTableSlot.isSlotEmpty = true;
+        scriptCard.currentTableSlot.currentCardInSlot = null;
+        Destroy(gameObject);
+    }
+
+    private void UpdateStats()
+    {
+        healthText.text = currentHealth.ToString();
+        attackText.text = currentAttack.ToString();
     }
 }

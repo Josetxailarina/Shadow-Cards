@@ -68,9 +68,9 @@ public class PlayerHandLayout : MonoBehaviour
             cards[i].localPosition = targetPositions[i];
 
             // Update sorting order for correct rendering
-            CardScript cardScript = cards[i].GetComponentInChildren<CardScript>();
+            CardBehavior cardScript = cards[i].GetComponentInChildren<CardBehavior>();
             if (cardScript != null)
-                cardScript.SortingOrderUp(i + 1);
+                cardScript.SortingOrderUp(i + 5);
         }
     }
 }
