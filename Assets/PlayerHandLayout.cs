@@ -70,7 +70,7 @@ public class PlayerHandLayout : MonoBehaviour
             // Update sorting order for correct rendering
             CardBehavior cardScript = cards[i].GetComponentInChildren<CardBehavior>();
             if (cardScript != null)
-                cardScript.SortingOrderUp(i + 5);
+                cardScript.SetSortingOrder(i + 5);
         }
     }
 }

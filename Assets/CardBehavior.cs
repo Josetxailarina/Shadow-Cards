@@ -4,29 +4,42 @@ using UnityEngine.Rendering;
 
 public class CardBehavior : MonoBehaviour
 {
+    // References to other scripts
     [HideInInspector] public TableSlot currentTableSlot;
     [HideInInspector] public CardState cardState;
-    [HideInInspector] public Animator cardAnimator;
+    private PlayerHandLayout playerHandLayout;
 
+
+    // State variables for card interaction
     private bool isDragging = false;
-    private int currentSortingOrderInHand;
 
+
+    // Internal Unity component references
+    [HideInInspector] public Animator cardAnimator;
     private SortingGroup sortingGroup;
     private Camera mainCamera;
-    private GameObject parentGameobject;
-    private PlayerHandLayout playerHandLayout;
-    private Vector3 targetPosition;
     private BoxCollider2D cardCollider;
+
+
+    // Card movement and positioning
+    private GameObject parentGameobject;
+    private Vector3 targetPosition;
+    private int currentSortingOrderInHand;
+
+
+    // Default collider values for reset
     private Vector2 defaultColliderOffset;
     private Vector2 defaultColliderSize;
 
 
-
+    
     private void Awake()
     {
         sortingGroup = GetComponent<SortingGroup>();
         cardAnimator = GetComponent<Animator>();
         cardCollider = GetComponent<BoxCollider2D>();
+        cardState = GetComponentInParent<CardState>();
+
         if (cardCollider != null)
         {
             defaultColliderOffset = cardCollider.offset;
@@ -39,7 +52,6 @@ public class CardBehavior : MonoBehaviour
         mainCamera = Camera.main;
         parentGameobject = transform.parent.gameObject;
         playerHandLayout = FindObjectOfType<PlayerHandLayout>();
-        cardState = GetComponentInParent<CardState>();
     }
 
     private void Update()
@@ -63,10 +75,10 @@ public class CardBehavior : MonoBehaviour
     {
         if (GameManager.gameState == GameState.Play)
         {
-            if (ContadoresScript.mana >= cardState.cardData.cost)
+            if (CountersManager.instance.CanPayManaCost(cardState.cardData.cost))
             {
 
-                SortingOrderUp(20);
+                SetSortingOrder(20);
                 isDragging = true;
                 GameManager.isDraggingCard = true;
                 cardCollider.size = new Vector2(0.2f, 0.2f);
@@ -78,7 +90,7 @@ public class CardBehavior : MonoBehaviour
             }
             else
             {
-                ContadoresScript.ManaAnim();
+                CountersManager.instance.ShowManaInsufficient();
             }
         }
 
@@ -104,9 +116,9 @@ public class CardBehavior : MonoBehaviour
                 currentTableSlot.currentCardInSlot = transform.parent.GetComponent<CardState>();
                 currentTableSlot.currentCardInSlot.scriptCard = this;
                 transform.parent.parent = currentTableSlot.gameObject.transform;
-                StartCoroutine(MoveFromTo(parentGameobject.transform.position, targetPosition, 0.15f));
+                StartCoroutine(AnimateCardMovement(parentGameobject.transform.position, targetPosition, 0.15f));
                 cardCollider.enabled = false;
-                ContadoresScript.BajarMana(cardState.cardData.cost);
+                CountersManager.instance.ReducePlayerMana(cardState.cardData.cost);
                 SoundManager.instance.useCardSound.Play();
 
 
@@ -114,7 +126,7 @@ public class CardBehavior : MonoBehaviour
             else if (cardState.cardData.isElementalCard && currentTableSlot != null && !currentTableSlot.isSlotEmpty && currentTableSlot.currentCardInSlot.CanAddElement(cardState.cardData.element))
             {
                 currentTableSlot.currentCardInSlot.AddElement(cardState);
-                ContadoresScript.BajarMana(cardState.cardData.cost);
+                CountersManager.instance.ReducePlayerMana(cardState.cardData.cost);
                 Destroy(transform.parent.gameObject);
             }
             else
@@ -147,7 +159,7 @@ public class CardBehavior : MonoBehaviour
     {
         sortingGroup.sortingOrder = 5;
     }
-    public void SortingOrderUp(int Order)
+    public void SetSortingOrder(int Order)
     {
         sortingGroup.sortingOrder = Order;
     }
@@ -157,7 +169,7 @@ public class CardBehavior : MonoBehaviour
         {
             cardAnimator.SetBool("ShowCard", true);
             currentSortingOrderInHand = sortingGroup.sortingOrder;
-            SortingOrderUp(20);
+            SetSortingOrder(20);
             SoundManager.instance.selectCardSound.Play();
         }
     }
@@ -167,7 +179,7 @@ public class CardBehavior : MonoBehaviour
         if (!GameManager.isDraggingCard && GameManager.gameState == GameState.Play)
         {
             cardAnimator.SetBool("ShowCard", false);
-            SortingOrderUp(currentSortingOrderInHand);
+            SetSortingOrder(currentSortingOrderInHand);
         }
     }
 
@@ -176,7 +188,6 @@ public class CardBehavior : MonoBehaviour
         if (isDragging)
         {
             Vector3 mouseScreenPosition = Input.mousePosition;
-
             Vector3 mouseWorldPosition = mainCamera.ScreenToWorldPoint(new Vector3(mouseScreenPosition.x, mouseScreenPosition.y, mainCamera.WorldToScreenPoint(parentGameobject.transform.position).z));
 
             parentGameobject.transform.position = new Vector3(mouseWorldPosition.x, mouseWorldPosition.y, parentGameobject.transform.position.z);
@@ -187,22 +198,18 @@ public class CardBehavior : MonoBehaviour
     {
         cardCollider.enabled = false;
     }
-    IEnumerator MoveFromTo(Vector3 start, Vector3 end, float duration)
+    IEnumerator AnimateCardMovement(Vector3 start, Vector3 end, float duration)
     {
         float elapsedTime = 0;
         while (elapsedTime < duration)
         {
-            // Actualiza la posición del objeto
             parentGameobject.transform.position = Vector3.Lerp(start, end, elapsedTime / duration);
 
-            // Incrementa el tiempo transcurrido
             elapsedTime += Time.deltaTime;
 
-            // Espera hasta el siguiente frame
             yield return null;
         }
 
-        // Asegura que el objeto termine exactamente en la posición final
         parentGameobject.transform.position = end;
     }
 }

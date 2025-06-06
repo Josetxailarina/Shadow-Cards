@@ -31,7 +31,7 @@ public class ScriptTurn : MonoBehaviour
             {
                 OpenWarningPanel(false);
             }
-            else if (CheckManaUsefull())
+            else if (HasUsableMana())
             {
                 OpenWarningPanel(true);
             }
@@ -86,17 +86,7 @@ public class ScriptTurn : MonoBehaviour
     public void NewTurn()
     {
         turn++;
-        if (turn > 10)
-        {
-            ContadoresScript.mana = 10;
-
-        }
-        else
-        {
-            ContadoresScript.mana = turn;
-
-        }
-        ContadoresScript.UpdateStats();
+        CountersManager.instance.SetCurrentMana(turn);
         sprite.color = new Color(1f, 1f, 1f, 1);
         StartCoroutine(mazoScript.DrawSomeCards(2));
         foreach (TableSlot script in playerTableCards)
@@ -123,12 +113,12 @@ public class ScriptTurn : MonoBehaviour
     }
 
    
-    public bool CheckManaUsefull()
+    public bool HasUsableMana()
     {
         CardState[] cards = mano.GetComponentsInChildren<CardState>();
         foreach (CardState card in cards)
         {
-            if (card.cardData.cost <= ContadoresScript.mana)
+            if (CountersManager.instance.CanPayManaCost(card.cardData.cost))
             {
                 return true;
             }

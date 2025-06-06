@@ -117,11 +117,11 @@ public class TableSlot : MonoBehaviour
         }
         else if (!isEnemySlot)
         {
-            ContadoresScript.ReduceBossHealth(currentCardInSlot.currentAttack);
+            CountersManager.instance.ReduceBossHealth(currentCardInSlot.currentAttack);
         }
         else
         {
-            ContadoresScript.ReducePlayerHealth(currentCardInSlot.currentAttack);
+            CountersManager.instance.ReducePlayerHealth(currentCardInSlot.currentAttack);
         }
     }
 
