@@ -1,9 +1,29 @@
-<h2>🃏 The Alchemist's Veil – Game Jam Project</h2>
+# The Alchemist's Veil ✨🧪
 
-<p>This repository contains a card game developed during a 7-day Game Jam.</p>
+![Game Banner](https://img.itch.zone/aW1nLzE3MTU0NDY4LmpwZw==/original/emyxDr.jpg)
 
-<p>The gameplay revolves around combining elements strategically to defeat a final boss.</p>
+**The Alchemist's Veil** is a card-based strategy game originally developed in just **7 days** for a Game Jam challenge. The core gameplay revolves around combining elements and outsmarting enemies in turn-based combat.
 
-<p>Despite the tight development timeline, the project was completed on schedule, delivering a fully playable, functional, and extendable game.</p>
+---
 
-<p>While the code and organization reflect the fast-paced nature of Game Jam development, this project demonstrates effective time management and a focus on core gameplay mechanics.</p>
+## 🛠️ Massive Refactor & Code Cleanup
+
+This repository now contains a **heavily refactored and cleaned-up version** of the original Game Jam code. While the jam version focused on rapid prototyping and core mechanics, this version focuses on **clean architecture**, **maintainability**, and **readability**.
+
+Key improvements:
+- 🔄 Simplified and modularized complex scripts into smaller, focused components
+- ✍️ Renamed unclear variables and methods for better self-documentation
+- 🧹 Removed redundant logic and cleaned up messy code blocks
+- 🗂️ Organized scripts into logical folders (Managers, Cards, UI, Gameplay)
+- ⚙️ Reviewed the entire codebase to ensure all systems still work as expected
+
+> 💡 *The original Game Jam version remains playable on Itch.io as it was submitted on the final day of development.*
+
+---
+
+## ▶️ Play the Game
+
+Try the original 7-day version on **Itch.io**:  
+🔗 [https://maxtigames.itch.io/the-alchemists-veil](https://maxtigames.itch.io/the-alchemists-veil)
+
+---
